@@ -1,0 +1,12 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "bq_schema_placeholder"
+author = "Limehome GmbH"
+author-email = "raphael.brand@limehome.de"
+home-page = "https://gitlab.com/limehome/bi/bq-schema-placeholder"
+classifiers = ["License :: OSI Approved :: MIT License"]
+description-file = "README.md"
+
