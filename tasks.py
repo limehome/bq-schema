@@ -11,7 +11,7 @@ def lint(context):
 
 @task
 def type_check(context):
-    context.run("mypy -m bq_schema_placeholder")
+    context.run("mypy bq_schema_placeholder")
 
 
 @task
