@@ -15,6 +15,7 @@ class {schema_name}:
 {fields}
 """
 _TEMPLATE_FIELD = "    {field_name}: {field_type}"
+_TEMPLATE_FIELD_WITH_DESCRIPTION = '    {field_name}: {field_type} = field(metadata={{"description": "{field_description}"}})'
 
 
 def schema_to_dataclass(
@@ -51,7 +52,19 @@ def _create_field(field: SchemaField) -> str:
     if field_mode == BigQueryFieldModes.NULLABLE:
         dataclass_type = f"Optional[{dataclass_type}]"
 
-    return _TEMPLATE_FIELD.format(field_name=field.name, field_type=dataclass_type)
+    field_string = {
+        "template": _TEMPLATE_FIELD,
+        "args": {
+            "field_name": field.name,
+            "field_type": dataclass_type,
+        },
+    }
+
+    if field.description:
+        field_string["template"] = _TEMPLATE_FIELD_WITH_DESCRIPTION
+        field_string["args"]["field_description"] = field.description
+
+    return field_string["template"].format(**field_string["args"])
 
 
 def _generate_dataclass_name(schema_name: str) -> str:
