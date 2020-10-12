@@ -2,7 +2,7 @@
 Convert a python dataclass into a BigQuery schema definition.
 """
 from dataclasses import Field, fields, is_dataclass
-from typing import Any, List, Type, Union
+from typing import Any, List, Type, Union, Optional
 
 from google.cloud.bigquery import SchemaField
 
@@ -27,6 +27,7 @@ def _field_to_schema(field: Field) -> SchemaField:
         return SchemaField(
             name=field.name,
             field_type=field_type,
+            description=_parse_field_description(field),
             mode=BigQueryFieldModes.REQUIRED,
         )
 
@@ -35,6 +36,7 @@ def _field_to_schema(field: Field) -> SchemaField:
             name=field.name,
             field_type=BigQueryTypes.STRUCT,
             mode=BigQueryFieldModes.REQUIRED,
+            description=_parse_field_description(field),
             fields=_parse_fields(field.type),
         )
 
@@ -54,6 +56,7 @@ def _parse_list(field: Field) -> SchemaField:
         name=field.name,
         field_type=_python_type_to_big_query_type(field_type),
         mode=BigQueryFieldModes.REPEATED,
+        description=_parse_field_description(field),
         fields=_parse_fields(field_type),
     )
 
@@ -68,6 +71,7 @@ def _parse_optional(field: Field) -> SchemaField:
         name=field.name,
         field_type=_python_type_to_big_query_type(field_type),
         mode=BigQueryFieldModes.NULLABLE,
+        description=_parse_field_description(field),
         fields=_parse_fields(field_type),
     )
 
@@ -88,3 +92,9 @@ def _python_type_to_big_query_type(field_type: Any) -> BigQueryTypes:
         return bq_type
 
     raise TypeError(f"Unsupported type: {field_type}")
+
+
+def _parse_field_description(field: Field) -> Optional[str]:
+    if "description" in field.metadata:
+        return field.metadata["description"]
+    return None

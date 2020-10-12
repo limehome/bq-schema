@@ -1,4 +1,5 @@
 import inspect
+from dataclasses import field
 from typing import List, Optional
 from datetime import date, datetime, time
 from decimal import Decimal
@@ -9,12 +10,14 @@ from bq_schema_placeholder.schema_converter import schema_to_dataclass
 from bq_schema_placeholder.types.type_mapping import Timestamp
 
 
+# pylint: disable=line-too-long
+# fmt: off
 class RequiredNestedField:
-    int_field: int
+    int_field: int = field(metadata={"description": "This field is an INT field."})
 
 
 class RequiredSchema:
-    string_field: str
+    string_field: str = field(metadata={"description": "This field is a STRING field."})
     bytes_field: bytes
     int_field: int
     float_field: float
@@ -24,12 +27,16 @@ class RequiredSchema:
     date_field: date
     time_field: time
     datetime_field: datetime
-    required_nested_field: RequiredNestedField
+    required_nested_field: RequiredNestedField = field(metadata={"description": "This field is a STRUCT field."})
+# fmt: on
+# pylint: enable=line-too-long
 
 
 def test_required_schema_to_dataclass():
     schema = [
-        SchemaField("string_field", "STRING", "REQUIRED", None, ()),
+        SchemaField(
+            "string_field", "STRING", "REQUIRED", "This field is a STRING field.", ()
+        ),
         SchemaField("bytes_field", "BYTES", "REQUIRED", None, ()),
         SchemaField("int_field", "INT64", "REQUIRED", None, ()),
         SchemaField("float_field", "FLOAT64", "REQUIRED", None, ()),
@@ -43,20 +50,26 @@ def test_required_schema_to_dataclass():
             "required_nested_field",
             "STRUCT",
             "REQUIRED",
-            None,
-            (SchemaField("int_field", "INT64", "REQUIRED", None, ()),),
+            "This field is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "REQUIRED", "This field is an INT field.", ()
+                ),
+            ),
         ),
     ]
     expected = f"@dataclass\n{inspect.getsource(RequiredNestedField)}\n@dataclass\n{inspect.getsource(RequiredSchema)}"
     assert schema_to_dataclass("RequiredSchema", schema) == expected.strip()
 
 
+# pylint: disable=line-too-long
+# fmt: off
 class NullableNestedField:
-    int_field: Optional[int]
+    int_field: Optional[int] = field(metadata={"description": "This field is an INT field."})
 
 
 class NullableSchema:
-    string_field: Optional[str]
+    string_field: Optional[str] = field(metadata={"description": "This field is a STRING field."})
     bytes_field: Optional[bytes]
     int_field: Optional[int]
     float_field: Optional[float]
@@ -66,12 +79,16 @@ class NullableSchema:
     date_field: Optional[date]
     time_field: Optional[time]
     datetime_field: Optional[datetime]
-    nullable_nested_field: Optional[NullableNestedField]
+    nullable_nested_field: Optional[NullableNestedField] = field(metadata={"description": "This field is a STRUCT field."})
+# fmt: on
+# pylint: enable=line-too-long
 
 
 def test_optional_schema_to_dataclass():
     schema = [
-        SchemaField("string_field", "STRING", "NULLABLE", None, ()),
+        SchemaField(
+            "string_field", "STRING", "NULLABLE", "This field is a STRING field.", ()
+        ),
         SchemaField("bytes_field", "BYTES", "NULLABLE", None, ()),
         SchemaField("int_field", "INT64", "NULLABLE", None, ()),
         SchemaField("float_field", "FLOAT64", "NULLABLE", None, ()),
@@ -85,20 +102,26 @@ def test_optional_schema_to_dataclass():
             "nullable_nested_field",
             "STRUCT",
             "NULLABLE",
-            None,
-            (SchemaField("int_field", "INT64", "NULLABLE", None, ()),),
+            "This field is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "NULLABLE", "This field is an INT field.", ()
+                ),
+            ),
         ),
     ]
     expected = f"@dataclass\n{inspect.getsource(NullableNestedField)}\n@dataclass\n{inspect.getsource(NullableSchema)}"
     assert schema_to_dataclass("NullableSchema", schema) == expected.strip()
 
 
+# pylint: disable=line-too-long
+# fmt: off
 class RepeatedNestedField:
-    int_field: List[int]
+    int_field: List[int] = field(metadata={"description": "This field is an INT field."})
 
 
 class RepeatedSchema:
-    string_field: List[str]
+    string_field: List[str] = field(metadata={"description": "This field is a STRING field."})
     bytes_field: List[bytes]
     int_field: List[int]
     float_field: List[float]
@@ -108,12 +131,16 @@ class RepeatedSchema:
     date_field: List[date]
     time_field: List[time]
     datetime_field: List[datetime]
-    repeated_nested_field: List[RepeatedNestedField]
+    repeated_nested_field: List[RepeatedNestedField] = field(metadata={"description": "This field is a STRUCT field."})
+# fmt: on
+# pylint: enable=line-too-long
 
 
 def test_repeated_schema_to_dataclass():
     schema = [
-        SchemaField("string_field", "STRING", "REPEATED", None, ()),
+        SchemaField(
+            "string_field", "STRING", "REPEATED", "This field is a STRING field.", ()
+        ),
         SchemaField("bytes_field", "BYTES", "REPEATED", None, ()),
         SchemaField("int_field", "INT64", "REPEATED", None, ()),
         SchemaField("float_field", "FLOAT64", "REPEATED", None, ()),
@@ -127,8 +154,12 @@ def test_repeated_schema_to_dataclass():
             "repeated_nested_field",
             "STRUCT",
             "REPEATED",
-            None,
-            (SchemaField("int_field", "INT64", "REPEATED", None, ()),),
+            "This field is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "REPEATED", "This field is an INT field.", ()
+                ),
+            ),
         ),
     ]
     expected = f"@dataclass\n{inspect.getsource(RepeatedNestedField)}\n@dataclass\n{inspect.getsource(RepeatedSchema)}"

@@ -1,5 +1,5 @@
 # pylint: disable=too-many-instance-attributes
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime, time
 from decimal import Decimal
 from typing import List, Optional
@@ -13,11 +13,11 @@ from bq_schema_placeholder.types.type_mapping import Timestamp
 def test_types():
     @dataclass
     class NestedSchema:
-        int_field: int
+        int_field: int = field(metadata={"description": "This is an INT field."})
 
     @dataclass
     class Schema:
-        string_field: str
+        string_field: str = field(metadata={"description": "This is a STRING field."})
         bytes_field: bytes
         int_field: int
         float_field: float
@@ -27,10 +27,14 @@ def test_types():
         date_field: date
         time_field: time
         datetime_field: datetime
-        nested_field: NestedSchema
+        nested_field: NestedSchema = field(
+            metadata={"description": "This is a STRUCT field."}
+        )
 
     assert dataclass_to_schema(Schema) == [
-        SchemaField("string_field", "STRING", "REQUIRED", None, ()),
+        SchemaField(
+            "string_field", "STRING", "REQUIRED", "This is a STRING field.", ()
+        ),
         SchemaField("bytes_field", "BYTES", "REQUIRED", None, ()),
         SchemaField("int_field", "INT64", "REQUIRED", None, ()),
         SchemaField("float_field", "FLOAT64", "REQUIRED", None, ()),
@@ -44,8 +48,12 @@ def test_types():
             "nested_field",
             "STRUCT",
             "REQUIRED",
-            None,
-            (SchemaField("int_field", "INT64", "REQUIRED", None, ()),),
+            "This is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "REQUIRED", "This is an INT field.", ()
+                ),
+            ),
         ),
     ]
 
@@ -53,11 +61,15 @@ def test_types():
 def test_optional_types():
     @dataclass
     class NestedSchema:
-        int_field: Optional[int]
+        int_field: Optional[int] = field(
+            metadata={"description": "This is an INT field."}
+        )
 
     @dataclass
     class Schema:
-        string_field: Optional[str]
+        string_field: Optional[str] = field(
+            metadata={"description": "This is a STRING field."}
+        )
         bytes_field: Optional[bytes]
         int_field: Optional[int]
         float_field: Optional[float]
@@ -67,10 +79,14 @@ def test_optional_types():
         date_field: Optional[date]
         time_field: Optional[time]
         datetime_field: Optional[datetime]
-        nested_field: Optional[NestedSchema]
+        nested_field: Optional[NestedSchema] = field(
+            metadata={"description": "This is a STRUCT field."}
+        )
 
     assert dataclass_to_schema(Schema) == [
-        SchemaField("string_field", "STRING", "NULLABLE", None, ()),
+        SchemaField(
+            "string_field", "STRING", "NULLABLE", "This is a STRING field.", ()
+        ),
         SchemaField("bytes_field", "BYTES", "NULLABLE", None, ()),
         SchemaField("int_field", "INT64", "NULLABLE", None, ()),
         SchemaField("float_field", "FLOAT64", "NULLABLE", None, ()),
@@ -84,8 +100,12 @@ def test_optional_types():
             "nested_field",
             "STRUCT",
             "NULLABLE",
-            None,
-            (SchemaField("int_field", "INT64", "NULLABLE", None, ()),),
+            "This is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "NULLABLE", "This is an INT field.", ()
+                ),
+            ),
         ),
     ]
 
@@ -93,11 +113,13 @@ def test_optional_types():
 def test_repeated_types():
     @dataclass
     class NestedSchema:
-        int_field: List[int]
+        int_field: List[int] = field(metadata={"description": "This is an INT field."})
 
     @dataclass
     class Schema:
-        string_field: List[str]
+        string_field: List[str] = field(
+            metadata={"description": "This is a STRING field."}
+        )
         bytes_field: List[bytes]
         int_field: List[int]
         float_field: List[float]
@@ -107,10 +129,14 @@ def test_repeated_types():
         date_field: List[date]
         time_field: List[time]
         datetime_field: List[datetime]
-        nested_field: List[NestedSchema]
+        nested_field: List[NestedSchema] = field(
+            metadata={"description": "This is a STRUCT field."}
+        )
 
     assert dataclass_to_schema(Schema) == [
-        SchemaField("string_field", "STRING", "REPEATED", None, ()),
+        SchemaField(
+            "string_field", "STRING", "REPEATED", "This is a STRING field.", ()
+        ),
         SchemaField("bytes_field", "BYTES", "REPEATED", None, ()),
         SchemaField("int_field", "INT64", "REPEATED", None, ()),
         SchemaField("float_field", "FLOAT64", "REPEATED", None, ()),
@@ -124,7 +150,11 @@ def test_repeated_types():
             "nested_field",
             "STRUCT",
             "REPEATED",
-            None,
-            (SchemaField("int_field", "INT64", "REPEATED", None, ()),),
+            "This is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "REPEATED", "This is an INT field.", ()
+                ),
+            ),
         ),
     ]
