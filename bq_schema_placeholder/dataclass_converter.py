@@ -2,9 +2,14 @@
 Convert a python dataclass into a BigQuery schema definition.
 """
 from dataclasses import Field, fields, is_dataclass
-from typing import Any, List, Type, Union, Optional
+from typing import Any, List, Optional, Type, Union
 
 from google.cloud.bigquery import SchemaField
+
+from bq_schema_placeholder.types.type_parser import (
+    parse_inner_type_of_list,
+    parse_inner_type_of_optional,
+)
 
 from .types import BigQueryFieldModes, BigQueryTypes, TypeMapping
 
@@ -51,7 +56,7 @@ def _field_to_schema(field: Field) -> SchemaField:
 
 
 def _parse_list(field: Field) -> SchemaField:
-    field_type = field.type.__args__[0]
+    field_type = parse_inner_type_of_list(field.type)
     return SchemaField(
         name=field.name,
         field_type=_python_type_to_big_query_type(field_type),
@@ -62,11 +67,7 @@ def _parse_list(field: Field) -> SchemaField:
 
 
 def _parse_optional(field: Field) -> SchemaField:
-    args = field.type.__args__
-    if not (len(args) == 2 and any(arg is _NoneType for arg in args)):
-        raise TypeError(f"Unsupported type: {field.type}.")
-
-    field_type = next(arg for arg in args if arg is not _NoneType)
+    field_type = parse_inner_type_of_optional(field.type)
     return SchemaField(
         name=field.name,
         field_type=_python_type_to_big_query_type(field_type),
