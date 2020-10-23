@@ -1,5 +1,5 @@
-from typing import List
-from dataclasses import dataclass
+from typing import List, Optional
+from dataclasses import dataclass, field
 from datetime import date, datetime, time
 from decimal import Decimal
 
@@ -18,6 +18,8 @@ class NestedAgain:
 class NestedSchema:
     int_field: int
     nested_again: NestedAgain
+    nested_again_optional_set: Optional[NestedAgain]
+    nested_again_optional_unset: Optional[NestedAgain]
     nested_again_repeated: List[NestedAgain]
 
 
@@ -32,9 +34,12 @@ class Schema:
     timestamp_field: Timestamp
     date_field: date
     time_field: time
-    datetime_field: datetime
+    optional_int_unset: Optional[int]
+    optional_int_set: Optional[int]
+    optional_nested_field: Optional[NestedSchema]
     nested_field: NestedSchema
     nested_repeated_field: List[NestedSchema]
+    datetime_field: datetime
 
 
 def test_transform_dataclass_instance_to_row():
@@ -49,16 +54,23 @@ def test_transform_dataclass_instance_to_row():
         timestamp_field=Timestamp(2020, 1, 1),
         date_field=date(2020, 1, 1),
         time_field=time(1, 1, 1),
+        optional_int_unset=None,
+        optional_int_set=10,
+        optional_nested_field=None,
         datetime_field=datetime(2020, 2, 2),
         nested_field=NestedSchema(
             int_field=2,
             nested_again=NestedAgain(int_field=3),
+            nested_again_optional_set=NestedAgain(int_field=3),
+            nested_again_optional_unset=None,
             nested_again_repeated=[NestedAgain(int_field=4)],
         ),
         nested_repeated_field=[
             NestedSchema(
                 int_field=2,
                 nested_again=NestedAgain(int_field=3),
+                nested_again_optional_set=NestedAgain(int_field=3),
+                nested_again_optional_unset=None,
                 nested_again_repeated=[NestedAgain(int_field=4)],
             )
         ],
@@ -74,18 +86,25 @@ def test_transform_dataclass_instance_to_row():
         "nested_field": {
             "int_field": 2,
             "nested_again": {"int_field": 3},
+            "nested_again_optional_set": {"int_field": 3},
+            "nested_again_optional_unset": None,
             "nested_again_repeated": [{"int_field": 4}],
         },
         "nested_repeated_field": [
             {
                 "int_field": 2,
                 "nested_again": {"int_field": 3},
+                "nested_again_optional_set": {"int_field": 3},
+                "nested_again_optional_unset": None,
                 "nested_again_repeated": [{"int_field": 4}],
             }
         ],
         "numeric_field": Decimal("1.0"),
         "string_field": "string",
         "time_field": time(1, 1, 1),
+        "optional_int_set": 10,
+        "optional_int_unset": None,
+        "optional_nested_field": None,
         "timestamp_field": Timestamp(2020, 1, 1, 0, 0),
     }
     assert row_transformer.dataclass_instance_to_bq_row(instance) == expected
@@ -102,22 +121,26 @@ def test_transfrom_row_into_dataclass():
         "nested_field": {
             "int_field": 2,
             "nested_again": {"int_field": 3},
+            "nested_again_optional_set": {"int_field": 3},
             "nested_again_repeated": [{"int_field": 4}],
         },
         "nested_repeated_field": [
             {
                 "int_field": 2,
-                "nested_again": {"int_field": 5},
-                "nested_again_repeated": [{"int_field": 6}],
+                "nested_again": {"int_field": 3},
+                "nested_again_optional_set": {"int_field": 3},
+                "nested_again_repeated": [{"int_field": 4}],
             }
         ],
         "numeric_field": Decimal("1.0"),
         "string_field": "string",
         "time_field": time(1, 1, 1),
+        "optional_int_set": 10,
         "timestamp_field": Timestamp(2020, 1, 1, 0, 0),
     }
     row_transformer = RowTransformer(Schema)
     row = dict_to_row(row_as_dict)
+
     expected = Schema(
         string_field="string",
         bytes_field=b"string",
@@ -128,17 +151,24 @@ def test_transfrom_row_into_dataclass():
         timestamp_field=Timestamp(2020, 1, 1),
         date_field=date(2020, 1, 1),
         time_field=time(1, 1, 1),
+        optional_int_unset=None,
+        optional_int_set=10,
+        optional_nested_field=None,
         datetime_field=datetime(2020, 2, 2),
         nested_field=NestedSchema(
             int_field=2,
             nested_again=NestedAgain(int_field=3),
+            nested_again_optional_set=NestedAgain(int_field=3),
+            nested_again_optional_unset=None,
             nested_again_repeated=[NestedAgain(int_field=4)],
         ),
         nested_repeated_field=[
             NestedSchema(
                 int_field=2,
-                nested_again=NestedAgain(int_field=5),
-                nested_again_repeated=[NestedAgain(int_field=6)],
+                nested_again=NestedAgain(int_field=3),
+                nested_again_optional_set=NestedAgain(int_field=3),
+                nested_again_optional_unset=None,
+                nested_again_repeated=[NestedAgain(int_field=4)],
             )
         ],
     )
