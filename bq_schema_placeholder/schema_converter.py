@@ -17,11 +17,13 @@ class {schema_name}:
 _TEMPLATE_FIELD = "    {field_name}: {field_type}"
 _TEMPLATE_FIELD_WITH_DESCRIPTION = '    {field_name}: {field_type} = field(metadata={{"description": "{field_description}"}})'
 
+_STRUCT_TYPES = {"RECORD", "STRUCT"}
+
 
 def schema_to_dataclass(
     schema_name: str, schema: List[SchemaField], nested_schema: bool = False
 ) -> str:
-    struct_fields = [s for s in schema if s.field_type == "STRUCT"]
+    struct_fields = [s for s in schema if s.field_type in _STRUCT_TYPES]
     nested_dataclasses = "".join(
         schema_to_dataclass(s.name, s.fields, True) for s in struct_fields
     )
@@ -71,5 +73,5 @@ def _generate_dataclass_name(schema_name: str) -> str:
     return (
         "".join(word.capitalize() for word in schema_name.split("_"))
         if "_" in schema_name
-        else schema_name
+        else schema_name.capitalize()
     )
