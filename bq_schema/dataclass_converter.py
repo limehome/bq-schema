@@ -6,7 +6,7 @@ from typing import Any, List, Optional, Type, Union
 
 from google.cloud.bigquery import SchemaField
 
-from bq_schema_placeholder.types.type_parser import (
+from bq_schema.types.type_parser import (
     parse_inner_type_of_list,
     parse_inner_type_of_optional,
 )

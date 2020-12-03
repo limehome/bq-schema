@@ -1,5 +1,5 @@
 from google.cloud.bigquery import SchemaField
-from bq_schema_placeholder.bigquery_table import BigqueryTable
+from bq_schema.bigquery_table import BigqueryTable
 
 
 class SecondTable(BigqueryTable):

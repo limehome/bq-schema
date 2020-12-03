@@ -5,8 +5,8 @@ from decimal import Decimal
 
 from google.cloud.bigquery.table import Row
 
-from bq_schema_placeholder.row_transformer import RowTransformer
-from bq_schema_placeholder.types.type_mapping import Timestamp
+from bq_schema.row_transformer import RowTransformer
+from bq_schema.types.type_mapping import Timestamp
 
 
 @dataclass

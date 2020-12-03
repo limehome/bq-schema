@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from bq_schema_placeholder.bigquery_table import BigqueryTable
+from bq_schema.bigquery_table import BigqueryTable
 
 
 @dataclass

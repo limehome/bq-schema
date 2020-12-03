@@ -138,7 +138,7 @@ you can implement the full_table_name method.
 #### Time partitioning
 Define time partitioning for your table:
 ```
-from bq_schema_placeholder.types.type_mapping import Timestamp
+from bq_schema.types.type_mapping import Timestamp
 from google.cloud.bigquery import TimePartitioning, TimePartitioningType
 
 class MyTable:

@@ -4,7 +4,7 @@ from importlib import util as importlib_util
 import inspect
 
 
-from bq_schema_placeholder.bigquery_table import BigqueryTable
+from bq_schema.bigquery_table import BigqueryTable
 
 
 def find_tables(module_path: str) -> Set[BigqueryTable]:

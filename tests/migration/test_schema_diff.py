@@ -1,5 +1,5 @@
 from google.cloud.bigquery import SchemaField
-from bq_schema_placeholder.migration.schema_diff import find_new_columns
+from bq_schema.migration.schema_diff import find_new_columns
 
 
 def test_find_new_columns():

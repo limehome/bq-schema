@@ -6,8 +6,8 @@ from decimal import Decimal
 
 from google.cloud.bigquery import SchemaField
 
-from bq_schema_placeholder.schema_converter import schema_to_dataclass
-from bq_schema_placeholder.types.type_mapping import Timestamp
+from bq_schema.schema_converter import schema_to_dataclass
+from bq_schema.types.type_mapping import Timestamp
 
 
 # pylint: disable=line-too-long

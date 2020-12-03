@@ -6,8 +6,8 @@ from typing import List, Optional
 
 from google.cloud.bigquery import SchemaField
 
-from bq_schema_placeholder.dataclass_converter import dataclass_to_schema
-from bq_schema_placeholder.types.type_mapping import Timestamp
+from bq_schema.dataclass_converter import dataclass_to_schema
+from bq_schema.types.type_mapping import Timestamp
 
 
 def test_types():

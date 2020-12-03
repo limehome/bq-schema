@@ -1,7 +1,7 @@
 from dataclasses import is_dataclass
 from typing import Union, List, Type, Optional, cast
 from google.cloud.bigquery import SchemaField, TimePartitioning
-from bq_schema_placeholder.dataclass_converter import dataclass_to_schema
+from bq_schema.dataclass_converter import dataclass_to_schema
 
 
 class BigqueryTable:

@@ -1,7 +1,7 @@
 from invoke import task
 
 _TEST_FOLDER = "tests"
-_SOURCE_FOLDERS = " ".join(["bq_schema_placeholder", _TEST_FOLDER])
+_SOURCE_FOLDERS = " ".join(["bq_schema", _TEST_FOLDER])
 
 
 @task
@@ -11,7 +11,7 @@ def lint(context):
 
 @task
 def type_check(context):
-    context.run("mypy bq_schema_placeholder")
+    context.run("mypy bq_schema")
 
 
 @task
