@@ -25,7 +25,7 @@ Since this library makes use of newer features of python, you need at least pyth
 
 1. Install the package
 ```
-pip install bq-schema
+pip install bq_schema
 ```
 
 2. Create a schema and a table definition in my_table.py
