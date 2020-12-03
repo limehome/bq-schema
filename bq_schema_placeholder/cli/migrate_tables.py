@@ -33,7 +33,7 @@ def main(
     project: Optional[str], dataset: Optional[str], module_path: str, apply: bool
 ) -> None:
     client = bigquery.Client()
-    for local_table in find_tables(module_path):
+    for local_table in set(find_tables(module_path)):
         project = project or local_table.project
         assert project, "Project has not been set."
         dataset = dataset or local_table.dataset
@@ -45,7 +45,7 @@ def main(
         try:
             remote_table = client.get_table(table_identifier)
         except NotFound:
-            print("Table does not exists in bq: {table_identifier}")
+            print("Table does not exist in bq: {table_identifier}")
             if apply:
                 print("Creating table.")
                 table = Table(
