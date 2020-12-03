@@ -34,9 +34,8 @@ def schema_to_dataclass(
     ).strip()
 
     return (
-        f"{python_dataclass}\n"
-        if nested_schema
-        else f"{nested_dataclasses}\n{python_dataclass}"
+        f"{nested_dataclasses}\n{python_dataclass}"
+        if nested_dataclasses else f"{python_dataclass}\n"
     )
 
 
@@ -73,5 +72,5 @@ def _generate_dataclass_name(schema_name: str) -> str:
     return (
         "".join(word.capitalize() for word in schema_name.split("_"))
         if "_" in schema_name
-        else schema_name.capitalize()
+        else schema_name[0].upper() + schema_name[1:]
     )

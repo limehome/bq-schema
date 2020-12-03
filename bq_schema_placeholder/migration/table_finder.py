@@ -8,7 +8,11 @@ from bq_schema_placeholder.bigquery_table import BigqueryTable
 
 
 def find_tables(module_path: str) -> Set[BigqueryTable]:
-    return set(_tables_iterator(module_path))
+    tables = {}
+    for table in _tables_iterator(module_path):
+        tables[(table.project, table.dataset, table.name)] = table
+
+    return set(tables.values())
 
 
 def _tables_iterator(module_path: str) -> Iterator[BigqueryTable]:

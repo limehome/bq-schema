@@ -59,7 +59,7 @@ def test_required_schema_to_dataclass():
         ),
     ]
     expected = f"@dataclass\n{inspect.getsource(RequiredNestedField)}\n@dataclass\n{inspect.getsource(RequiredSchema)}"
-    assert schema_to_dataclass("RequiredSchema", schema) == expected.strip()
+    assert schema_to_dataclass("RequiredSchema", schema).strip() == expected.strip()
 
 
 # pylint: disable=line-too-long
