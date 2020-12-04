@@ -30,7 +30,7 @@ jobs:
         flit install
     - name: Run code checks
       run: |
-        inv check-code-format
+        inv check-all
         ls -la
         pwd
         bash <(curl -s https://codecov.io/bash)
