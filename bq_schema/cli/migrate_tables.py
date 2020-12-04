@@ -1,12 +1,13 @@
-from typing import Optional
 import argparse
 from argparse import Namespace
-from google.cloud import bigquery
+from typing import Optional
+
 from google.api_core.exceptions import NotFound
+from google.cloud import bigquery
 from google.cloud.bigquery.table import Table
 
-from bq_schema.migration.table_finder import find_tables
 from bq_schema.migration.schema_diff import find_new_columns
+from bq_schema.migration.table_finder import find_tables
 
 
 def parse_args() -> Namespace:

@@ -1,8 +1,7 @@
-from typing import Iterator, Set
+import inspect
 import os
 from importlib import util as importlib_util
-import inspect
-
+from typing import Iterator, Set
 
 from bq_schema.bigquery_table import BigqueryTable
 

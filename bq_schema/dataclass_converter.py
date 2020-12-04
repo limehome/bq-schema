@@ -20,6 +20,9 @@ _NoneType = type(None)
 
 
 def dataclass_to_schema(dataclass: Type) -> List[SchemaField]:
+    """
+    Transfrom a dataclass into a list of SchemaField.
+    """
     if not is_dataclass(dataclass):
         raise TypeError("Not a dataclass.")
 

@@ -1,5 +1,6 @@
 import argparse
 from argparse import Namespace
+
 from google.cloud import bigquery
 
 from bq_schema.schema_converter import schema_to_dataclass

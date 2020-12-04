@@ -1,7 +1,7 @@
-from typing import List, Optional
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date, datetime, time
 from decimal import Decimal
+from typing import List, Optional
 
 from google.cloud.bigquery.table import Row
 
@@ -23,6 +23,7 @@ class NestedSchema:
     nested_again_repeated: List[NestedAgain]
 
 
+# pylint: disable=too-many-instance-attributes
 @dataclass
 class Schema:
     string_field: str
