@@ -1,0 +1,4 @@
+# codecov.yml
+
+fixes:
+  - "/home/runner/work/bq-schema/bq-schema/::" # Correct paths
