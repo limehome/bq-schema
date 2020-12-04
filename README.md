@@ -1,6 +1,7 @@
 # bq-schema
 ![Python package](https://github.com/limehome/bq-schema/workflows/Python%20package/badge.svg)
 [![PyPI version](https://badge.fury.io/py/bq_schema.svg)](https://badge.fury.io/py/bq_schema)
+![Codecov](https://img.shields.io/codecov/c/github/limehome/bq-schema)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
