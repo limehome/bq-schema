@@ -52,7 +52,7 @@ def test_transform_dataclass_instance_to_row():
         float_field=1.0,
         numeric_field=Decimal("1.0"),
         bool_field=True,
-        timestamp_field=Timestamp(2020, 1, 1),
+        timestamp_field=Timestamp(datetime(2020, 1, 1)),
         date_field=date(2020, 1, 1),
         time_field=time(1, 1, 1),
         optional_int_unset=None,
@@ -106,7 +106,7 @@ def test_transform_dataclass_instance_to_row():
         "optional_int_set": 10,
         "optional_int_unset": None,
         "optional_nested_field": None,
-        "timestamp_field": Timestamp(2020, 1, 1, 0, 0),
+        "timestamp_field": Timestamp(datetime(2020, 1, 1, 0, 0)),
     }
     assert row_transformer.dataclass_instance_to_bq_row(instance) == expected
 
@@ -137,7 +137,7 @@ def test_transfrom_row_into_dataclass():
         "string_field": "string",
         "time_field": time(1, 1, 1),
         "optional_int_set": 10,
-        "timestamp_field": Timestamp(2020, 1, 1, 0, 0),
+        "timestamp_field": Timestamp(datetime(2020, 1, 1, 0, 0)),
     }
     row_transformer = RowTransformer(Schema)
     row = dict_to_row(row_as_dict)
@@ -149,7 +149,7 @@ def test_transfrom_row_into_dataclass():
         float_field=1.0,
         numeric_field=Decimal("1.0"),
         bool_field=True,
-        timestamp_field=Timestamp(2020, 1, 1),
+        timestamp_field=Timestamp(datetime(2020, 1, 1)),
         date_field=date(2020, 1, 1),
         time_field=time(1, 1, 1),
         optional_int_unset=None,
