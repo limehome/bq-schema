@@ -93,11 +93,14 @@ for row in bigquery_client.query(query=query):
 For a full list of supported types check the following schema:
 ```python
 from typing import Optional
+from dataclasses import dataclass
 
+@dataclass
 class RequiredNestedField:
     int_field: int = field(metadata={"description": "This field is an INT field."})
 
 
+@dataclass
 class RequiredSchema:
     string_field: str = field(metadata={"description": "This field is a STRING field."})
     string_field_optional = Optional[str]
