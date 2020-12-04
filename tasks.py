@@ -22,7 +22,9 @@ def check_code_format(context):
 
 @task
 def test(context):
-    context.run(f"pytest {_TEST_FOLDER}")
+    context.run(
+        f"pytest {_TEST_FOLDER} --doctest-modules --junitxml=junit/test-results.xml --cov=bq_schema --cov-report=xml --cov-report=html"
+    )
 
 
 @task
