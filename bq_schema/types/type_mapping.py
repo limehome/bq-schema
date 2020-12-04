@@ -1,11 +1,8 @@
-from typing import NewType
-
 from datetime import date, datetime, time
 from decimal import Decimal
-from typing import Dict, Type
+from typing import Dict, NewType, Type
 
 from .big_query_types import BigQueryTypes
-
 
 Timestamp = NewType("Timestamp", datetime)
 
