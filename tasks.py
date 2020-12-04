@@ -17,7 +17,7 @@ def type_check(context):
 @task
 def check_code_format(context):
     context.run("black --check .")
-    context.run("isort --check .")
+    context.run("isort --profile black --check .")
 
 
 @task
@@ -28,7 +28,7 @@ def test(context):
 @task
 def format_code(context):
     context.run("black .")
-    context.run("isort .")
+    context.run("isort --profile black .")
 
 
 @task(pre=[lint, type_check, check_code_format, test])
