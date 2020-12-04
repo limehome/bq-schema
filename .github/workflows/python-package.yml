@@ -29,5 +29,6 @@ jobs:
         python -m pip install --upgrade flit
         flit install
     - name: Run code checks
-      run: |
-        inv check-code-format
+      run:
+        - inv check-code-format
+        - run: bash <(curl -s https://codecov.io/bash)
