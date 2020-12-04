@@ -31,4 +31,6 @@ jobs:
     - name: Run code checks
       run: |
         inv check-code-format
+        ls -la
+        pwd
         bash <(curl -s https://codecov.io/bash)
