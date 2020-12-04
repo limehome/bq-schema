@@ -1,5 +1,4 @@
-from typing import Type, Any
-
+from typing import Any, Type
 
 _NoneType = type(None)
 

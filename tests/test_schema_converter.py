@@ -1,8 +1,8 @@
 import inspect
 from dataclasses import field
-from typing import List, Optional
 from datetime import date, datetime, time
 from decimal import Decimal
+from typing import List, Optional
 
 from google.cloud.bigquery import SchemaField
 
@@ -10,7 +10,7 @@ from bq_schema.schema_converter import schema_to_dataclass
 from bq_schema.types.type_mapping import Timestamp
 
 
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long, too-few-public-methods
 # fmt: off
 class RequiredNestedField:
     int_field: int = field(metadata={"description": "This field is an INT field."})
@@ -58,7 +58,10 @@ def test_required_schema_to_dataclass():
             ),
         ),
     ]
-    expected = f"@dataclass\n{inspect.getsource(RequiredNestedField)}\n@dataclass\n{inspect.getsource(RequiredSchema)}"
+    expected = (
+        f"@dataclass\n{inspect.getsource(RequiredNestedField)}\n"
+        f"@dataclass\n{inspect.getsource(RequiredSchema)}"
+    )
     assert schema_to_dataclass("RequiredSchema", schema).strip() == expected.strip()
 
 
@@ -110,7 +113,10 @@ def test_optional_schema_to_dataclass():
             ),
         ),
     ]
-    expected = f"@dataclass\n{inspect.getsource(NullableNestedField)}\n@dataclass\n{inspect.getsource(NullableSchema)}"
+    expected = (
+        f"@dataclass\n{inspect.getsource(NullableNestedField)}\n"
+        f"@dataclass\n{inspect.getsource(NullableSchema)}"
+    )
     assert schema_to_dataclass("NullableSchema", schema) == expected.strip()
 
 
@@ -162,5 +168,8 @@ def test_repeated_schema_to_dataclass():
             ),
         ),
     ]
-    expected = f"@dataclass\n{inspect.getsource(RepeatedNestedField)}\n@dataclass\n{inspect.getsource(RepeatedSchema)}"
+    expected = (
+        f"@dataclass\n{inspect.getsource(RepeatedNestedField)}\n"
+        f"@dataclass\n{inspect.getsource(RepeatedSchema)}"
+    )
     assert schema_to_dataclass("RepeatedSchema", schema) == expected.strip()

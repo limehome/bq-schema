@@ -1,8 +1,6 @@
 """
 Convert a bigquery schema into the source code for a data class.
 """
-import itertools
-import inspect
 from typing import List
 
 from google.cloud.bigquery import SchemaField
@@ -15,17 +13,22 @@ class {schema_name}:
 {fields}
 """
 _TEMPLATE_FIELD = "    {field_name}: {field_type}"
-_TEMPLATE_FIELD_WITH_DESCRIPTION = '    {field_name}: {field_type} = field(metadata={{"description": "{field_description}"}})'
+_TEMPLATE_FIELD_WITH_DESCRIPTION = (
+    "    {field_name}: {field_type} ="
+    ' field(metadata={{"description": "{field_description}"}})'
+)
 
 _STRUCT_TYPES = {"RECORD", "STRUCT"}
 
 
-def schema_to_dataclass(
-    schema_name: str, schema: List[SchemaField], nested_schema: bool = False
-) -> str:
+def schema_to_dataclass(schema_name: str, schema: List[SchemaField]) -> str:
+    """
+    Convert a list of schema fields, our schema, into a dataclass.
+    """
+
     struct_fields = [s for s in schema if s.field_type in _STRUCT_TYPES]
     nested_dataclasses = "".join(
-        schema_to_dataclass(s.name, s.fields, True) for s in struct_fields
+        schema_to_dataclass(s.name, s.fields) for s in struct_fields
     )
     dataclass_fields = [_create_field(field) for field in schema]
     python_dataclass = _TEMPLATE_DATACLASS.format(
@@ -35,7 +38,8 @@ def schema_to_dataclass(
 
     return (
         f"{nested_dataclasses}\n{python_dataclass}"
-        if nested_dataclasses else f"{python_dataclass}\n"
+        if nested_dataclasses
+        else f"{python_dataclass}\n"
     )
 
 
@@ -53,7 +57,7 @@ def _create_field(field: SchemaField) -> str:
     if field_mode == BigQueryFieldModes.NULLABLE:
         dataclass_type = f"Optional[{dataclass_type}]"
 
-    field_string = {
+    field_string: dict = {
         "template": _TEMPLATE_FIELD,
         "args": {
             "field_name": field.name,

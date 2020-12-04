@@ -1,4 +1,5 @@
-from typing import List, Iterator
+from typing import Iterator, List
+
 from google.cloud import bigquery
 
 

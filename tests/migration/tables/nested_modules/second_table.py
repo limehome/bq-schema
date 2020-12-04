@@ -1,4 +1,5 @@
 from google.cloud.bigquery import SchemaField
+
 from bq_schema.bigquery_table import BigqueryTable
 
 
