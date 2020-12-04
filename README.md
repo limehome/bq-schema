@@ -29,7 +29,7 @@ pip install bq_schema
 ```
 
 2. Create a schema and a table definition in my_table.py
-```
+```python
 @dataclass
 class Schema:
     string_field: str = field(metadata={"description": "This is a STRING field."})
@@ -57,7 +57,7 @@ migrate-tables --project my_project --dataset my_dataset --module-path my_table 
 ```
 
 4. Write a row
-```
+```python
 from google.cloud import bigquery
 row = Schema(string_field="foo", int_field=1, some_floats=[1.0, 2.0], bool_field=True)
 row_transformer = RowTransformer[Schema](Schema)
@@ -74,7 +74,7 @@ mypy my_table.py
 ```
 
 6. Read a row
-```
+```python
 query = "SELECT * FROM project.dataset.my_table_name"
 for row in bigquery_client.query(query=query):
     deserialized_row = row_transformer.bq_row_to_dataclass_instance(row)
@@ -86,7 +86,7 @@ for row in bigquery_client.query(query=query):
 
 ### Schema definitions
 For a full list of supported types check the following schema:
-```
+```python
 from typing import Optional
 
 class RequiredNestedField:
@@ -126,7 +126,7 @@ The bigquery class is used for:
 
 #### Versioning tables
 Since bigquery does not allow backwards incompatible schema changes, you might want to version your schemas.project
-```
+```python
 class MyTable(BigqueryTable):
     name = "my_table_name"
     schema = Schema
@@ -137,7 +137,7 @@ you can implement the full_table_name method.
 
 #### Time partitioning
 Define time partitioning for your table:
-```
+```python
 from bq_schema.types.type_mapping import Timestamp
 from google.cloud.bigquery import TimePartitioning, TimePartitioningType
 
