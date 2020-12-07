@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 from google.cloud import bigquery
 from google.cloud.bigquery import Client
