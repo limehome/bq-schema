@@ -46,7 +46,7 @@ def main(
         try:
             remote_table = client.get_table(table_identifier)
         except NotFound:
-            print("Table does not exist in bq: {table_identifier}")
+            print(f"Table does not exist in bq: {table_identifier}")
             if apply:
                 print("Creating table.")
                 table = Table(
