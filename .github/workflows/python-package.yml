@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8']
+        python-version: ['3.8']
 
     steps:
     - uses: actions/checkout@v2
@@ -31,6 +31,4 @@ jobs:
     - name: Run code checks
       run: |
         python -c 'import bq_schema;assert bq_schema.__version__ == "0.1"'
-        pwd
-        python -c 'import bq_schema;assert bq_schema.__version__ == "0.2"'
         pwd
