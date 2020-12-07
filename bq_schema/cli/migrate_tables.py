@@ -3,9 +3,9 @@ from argparse import Namespace
 from typing import Optional
 
 from google.api_core.exceptions import NotFound
-from google.cloud import bigquery
 from google.cloud.bigquery.table import Table
 
+from bq_schema.cli.bigquery_connection import create_connection
 from bq_schema.migration.schema_diff import find_new_columns
 from bq_schema.migration.table_finder import find_tables
 
@@ -33,7 +33,7 @@ def parse_args() -> Namespace:
 def main(
     project: Optional[str], dataset: Optional[str], module_path: str, apply: bool
 ) -> None:
-    client = bigquery.Client()
+    client = create_connection()
     for local_table in set(find_tables(module_path)):
         project = project or local_table.project
         assert project, "Project has not been set."

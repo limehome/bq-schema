@@ -52,9 +52,15 @@ If you have already tables created in your account, you can use the convert-tabl
 
 3. Create your table
 
-**Hint:** Make sure to have you credentials set:
+**Hint:** 
+Make sure to have you credentials set:
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=your_auth.json
+```
+
+Alternativly you can set the service_file as a environment variable:
+```
+export GOOGLE_SERVICE_FILE={"type": "service_account", ...}
 ```
 
 Now create your table

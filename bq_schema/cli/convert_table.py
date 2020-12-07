@@ -1,8 +1,7 @@
 import argparse
 from argparse import Namespace
 
-from google.cloud import bigquery
-
+from bq_schema.cli.bigquery_connection import create_connection
 from bq_schema.schema_converter import schema_to_dataclass
 
 
@@ -20,7 +19,7 @@ def parse_args() -> Namespace:
 
 
 def main(project: str, dataset: str, table_name: str) -> None:
-    client = bigquery.Client()
+    client = create_connection()
     table = client.get_table(f"{project}.{dataset}.{table_name}")
     print("from dataclasses import dataclass")
     print(schema_to_dataclass(table_name, table.schema))
