@@ -119,6 +119,17 @@ class RequiredSchema:
     repeated_nested_field: List[RequiredNestedField]
 ```
 
+#### Timestamps
+Timestamps are deserialized into datetime objects, due to the nature of the underlying bq library. To distinguish between datetime and timestamp use bq_schema.types.type_mapping.
+Usage:
+
+```python
+from bq_schema.types.type_mapping import Timestamp
+from datetime import datetime
+
+the_timestamp = Timestamp(datetime.utcnow())
+```
+
 ### Table definitions
 The bigquery class is used for:
 * Recursive table discovery by our migrate-tables script
