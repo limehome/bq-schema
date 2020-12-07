@@ -30,5 +30,7 @@ jobs:
         flit install
     - name: Run code checks
       run: |
-        inv check-all
-        bash <(curl -s https://codecov.io/bash)
+        python -c 'import bq_schema;assert bq_schema.__version__ == "0.1"'
+        pwd
+        python -c 'import bq_schema;assert bq_schema.__version__ == "0.2"'
+        pwd
