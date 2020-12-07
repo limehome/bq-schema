@@ -8,6 +8,7 @@ migrate-tables = "bq_schema.cli.migrate_tables:cli"
 
 [tool.flit.metadata]
 module = "bq_schema"
+dist-name="bq-schema"
 author = "Limehome GmbH"
 author-email = "raphael.brand@limehome.de"
 home-page = "https://github.com/limehome/bq-schema"
