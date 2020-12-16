@@ -27,11 +27,22 @@ def parse_args() -> Namespace:
         help="If set to true, this script will apply all open migrations.",
     )
 
+    parser.add_argument(
+        "--validate",
+        default=False,
+        action="store_true",
+        help="If set to true, this script will fail if a difference in schemas is found. Useful for CI.",
+    )
+
     return parser.parse_args()
 
 
 def main(
-    project: Optional[str], dataset: Optional[str], module_path: str, apply: bool
+    project: Optional[str],
+    dataset: Optional[str],
+    module_path: str,
+    apply: bool,
+    validate: bool,
 ) -> None:
     client = create_connection()
     for local_table in set(find_tables(module_path)):
@@ -45,8 +56,12 @@ def main(
 
         try:
             remote_table = client.get_table(table_identifier)
-        except NotFound:
-            print(f"Table does not exist in bq: {table_identifier}")
+        except NotFound as not_found:
+            table_exists_msg = f"Table does not exist in bq: {table_identifier}"
+            if validate:
+                raise Exception(table_exists_msg) from not_found
+
+            print(table_exists_msg)
             if apply:
                 print("Creating table.")
                 table = Table(
@@ -61,7 +76,10 @@ def main(
                 find_new_columns(local_table.get_schema_fields(), remote_table.schema)
             )
             if new_columns:
-                print(f"Found new columns: {new_columns}")
+                new_columns_message = f"Found new columns: {new_columns}"
+                if validate:
+                    raise Exception(new_columns_message)
+                print(new_columns_message)
                 if apply:
                     print("Applying changes")
                     remote_table.schema = local_table.get_schema_fields()
@@ -70,7 +88,7 @@ def main(
 
 def cli() -> None:
     args = parse_args()
-    main(args.project, args.dataset, args.module_path, args.apply)
+    main(args.project, args.dataset, args.module_path, args.apply, args.validate)
 
 
 if __name__ == "__main__":
