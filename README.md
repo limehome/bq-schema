@@ -188,15 +188,21 @@ Show the help:
 migrate-tables --help
 ```
 
-Check if tables are in sync. This will fail if we find a diff:
+Check if tables are in sync. List all changes.
 ```
 migrate-tables --module-path module/
+```
+
+If you want the script to fail on a change, add the validate flag. Useful for running inside your CI:
+```
+migrate-tables --module-path module/ --validate
 ```
 
 Apply changes
 ```
 migrate-tables --module-path src/jobs/ --apply
 ```
+
 
 #### convert-table
 If you already have tables created in bigquery, this script print the corresponding dataclass for you.
