@@ -1,11 +1,15 @@
 from google.cloud.bigquery import SchemaField
 
-from bq_schema.migration.schema_diff import  check_schemas
+from bq_schema.migration.schema_diff import check_schemas
 
 
 def test_check_schemas():
-    local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])]
-    remote_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])]
+    local_schema = [
+        SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
+    ]
+    remote_schema = [
+        SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
+    ]
     assert list(check_schemas(local_schema, remote_schema)) == []
 
 
@@ -32,8 +36,12 @@ def test_find_new_columns_missing_column_in_record():
 
 
 def test_check_mode_fail():
-    local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])]
-    remote_schema = [SchemaField("a", "RECORD", "NULLABLE", fields=[SchemaField("b", "INTEGER")])]
+    local_schema = [
+        SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
+    ]
+    remote_schema = [
+        SchemaField("a", "RECORD", "NULLABLE", fields=[SchemaField("b", "INTEGER")])
+    ]
     assert list(check_schemas(local_schema, remote_schema)) == [
         "There is difference between SchemaField('a', 'RECORD', 'REQUIRED', "
         "None, (SchemaField('b', 'INTEGER', 'NULLABLE', None, ()),)) and "
@@ -43,8 +51,16 @@ def test_check_mode_fail():
 
 
 def test_check_mode_fail_nested():
-    local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "NULLABLE")])]
-    remote_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "REQUIRED")])]
+    local_schema = [
+        SchemaField(
+            "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "NULLABLE")]
+        )
+    ]
+    remote_schema = [
+        SchemaField(
+            "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "REQUIRED")]
+        )
+    ]
     assert list(check_schemas(local_schema, remote_schema)) == [
         "Nested: There is difference between SchemaField('b', 'INTEGER', 'NULLABLE', "
         "None, ()) and SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
@@ -61,10 +77,17 @@ def test_check_field_type_fail():
 
 
 def test_check_field_type_fail_nested():
-    local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "STRING", "REQUIRED")])]
-    remote_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "REQUIRED")])]
+    local_schema = [
+        SchemaField(
+            "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "STRING", "REQUIRED")]
+        )
+    ]
+    remote_schema = [
+        SchemaField(
+            "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "REQUIRED")]
+        )
+    ]
     assert list(check_schemas(local_schema, remote_schema)) == [
         "Nested: There is difference between SchemaField('b', 'STRING', 'REQUIRED', "
         "None, ()) and SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
     ]
-
