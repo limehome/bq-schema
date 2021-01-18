@@ -26,8 +26,6 @@ def check_schemas(
             remote_columns[column.name].field_type,
             types.StandardSqlDataType.TypeKind.TYPE_KIND_UNSPECIFIED,
         )
-        field_types_not_equal = column_field_type != remote_column_field_type
-
         if types.StandardSqlDataType.TypeKind.TYPE_KIND_UNSPECIFIED in (
             column_field_type,
             remote_column_field_type,
@@ -35,7 +33,10 @@ def check_schemas(
             check_schema_msg = (
                 f"Unspecified field type in {column} or {remote_columns[column.name]}"
             )
-        elif modes_not_equal or field_types_not_equal:
+            yield check_schema_msg
+            continue
+        field_types_not_equal = column_field_type != remote_column_field_type
+        if modes_not_equal or field_types_not_equal:
             check_schema_msg = (
                 f"Nested: There is difference between {column} and {remote_columns[column.name]}"
                 if is_nested

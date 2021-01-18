@@ -91,3 +91,32 @@ def test_check_field_type_fail_nested():
         "Nested: There is difference between SchemaField('b', 'STRING', 'REQUIRED', "
         "None, ()) and SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
     ]
+
+
+def test_check_field_type_unspecified():
+    local_schema = [SchemaField("a", "RANDOM_FIELD_TYPE", "REQUIRED")]
+    remote_schema = [SchemaField("a", "INTEGER", "REQUIRED")]
+    assert list(check_schemas(local_schema, remote_schema)) == [
+        "Unspecified field type in SchemaField('a', 'RANDOM_FIELD_TYPE', 'REQUIRED', None, ()) "
+        "or SchemaField('a', 'INTEGER', 'REQUIRED', None, ())"
+    ]
+
+
+def test_check_field_type_unspecified_nested():
+    local_schema = [
+        SchemaField(
+            "a",
+            "RECORD",
+            "REQUIRED",
+            fields=[SchemaField("b", "RANDOM_FIELD_TYPE", "REQUIRED")],
+        )
+    ]
+    remote_schema = [
+        SchemaField(
+            "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "REQUIRED")]
+        )
+    ]
+    assert list(check_schemas(local_schema, remote_schema)) == [
+        "Unspecified field type in SchemaField('b', 'RANDOM_FIELD_TYPE', 'REQUIRED', "
+        "None, ()) or SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
+    ]
