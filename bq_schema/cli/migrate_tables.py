@@ -6,7 +6,7 @@ from google.api_core.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 
 from bq_schema.cli.bigquery_connection import create_connection
-from bq_schema.migration.schema_diff import find_new_columns
+from bq_schema.migration.schema_diff import check_schemas
 from bq_schema.migration.table_finder import find_tables
 
 
@@ -72,14 +72,14 @@ def main(
                     table.time_partitioning = local_table.time_partitioning
                 print(client.create_table(table))
         else:
-            new_columns = list(
-                find_new_columns(local_table.get_schema_fields(), remote_table.schema)
+            schemas_diff = list(
+                check_schemas(local_table.get_schema_fields(), remote_table.schema)
             )
-            if new_columns:
-                new_columns_message = f"Found new columns: {new_columns}"
+            if schemas_diff:
+                schemas_diff_msg = f"Schemas diff: {schemas_diff}"
                 if validate:
-                    raise Exception(new_columns_message)
-                print(new_columns_message)
+                    raise Exception(schemas_diff_msg)
+                print(schemas_diff_msg)
                 if apply:
                     print("Applying changes")
                     remote_table.schema = local_table.get_schema_fields()
