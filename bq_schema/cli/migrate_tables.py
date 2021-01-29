@@ -45,10 +45,12 @@ def main(
     validate: bool,
 ) -> None:
     client = create_connection()
+    global_project = project
+    global_dataset = dataset
     for local_table in set(find_tables(module_path)):
-        project = project or local_table.project
+        project = global_project or local_table.project
         assert project, "Project has not been set."
-        dataset = dataset or local_table.dataset
+        dataset = global_dataset or local_table.dataset
         assert dataset, "Dataset has not been set."
 
         table_identifier = f"{project}.{dataset}.{local_table.full_table_name()}"
