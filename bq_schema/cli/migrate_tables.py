@@ -9,6 +9,7 @@ from google.cloud.bigquery.table import Table
 from bq_schema.cli.bigquery_connection import create_connection
 from bq_schema.migration.schema_diff import (
     apply_schema_differences,
+    confirm_apply_schema_differences,
     find_schema_differences,
     print_format_schema_differences,
 )
@@ -67,8 +68,10 @@ def main(
         pprint(formated_schema_diff)
         if validate:
             raise Exception(formated_schema_diff)
+    
     if apply:
-        apply_schema_differences(schema_diffs=schema_diffs)
+        if confirm_apply_schema_differences():
+            apply_schema_differences(schema_diffs=schema_diffs)
 
 
 def cli() -> None:
