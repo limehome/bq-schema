@@ -68,7 +68,9 @@ def main(
         pprint(formated_schema_diff)
         if validate:
             raise Exception(formated_schema_diff)
-    
+    else:
+        print("No schema differences found.")
+
     if apply:
         if confirm_apply_schema_differences():
             apply_schema_differences(schema_diffs=schema_diffs)

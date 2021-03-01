@@ -105,15 +105,17 @@ def print_format_schema_differences(schema_diffs: _SchemaDiffs) -> Dict[str, str
 
     return formated_prints
 
+
 def confirm_apply_schema_differences() -> bool:
     valid = {"yes": True, "y": True, "no": False, "n": False}
     while True:
-        confirm_apply = input("Do you really want to apply the changes listed above? [Y/N]: ").lower().strip()
+        confirm_apply = (
+            input("Do you really want to apply the changes? [Y/N]: ").lower().strip()
+        )
         if confirm_apply in valid:
             return valid[confirm_apply]
-        else:
-            print("Possible choices: [Y, y, Yes, yes, N, n, No, no]")
 
+        print("Possible choices: [Y, y, Yes, yes, N, n, No, no]")
 
 
 def apply_schema_differences(
