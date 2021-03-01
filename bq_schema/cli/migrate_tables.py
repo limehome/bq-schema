@@ -74,17 +74,20 @@ def main(
                 remote_table = client.create_table(table)
                 print(remote_table)
 
-        schemas_diff = list(
-            check_schemas(local_table.get_schema_fields(), remote_table.schema)
-        ) if not table_exists_msg and not apply else table_exists_msg
+        schemas_diff = (
+            list(check_schemas(local_table.get_schema_fields(), remote_table.schema))
+            if not table_exists_msg and not apply
+            else table_exists_msg
+        )
         if schemas_diff and validate:
-            schemas_errors[table_identifier] = schemas_diff 
+            schemas_errors[table_identifier] = schemas_diff
         elif apply:
             print("Applying changes")
             remote_table.schema = local_table.get_schema_fields()
             print(client.update_table(remote_table, ["schema"]))
     if schemas_errors:
         raise Exception(schemas_errors)
+
 
 def cli() -> None:
     args = parse_args()
