@@ -19,6 +19,13 @@ def check_schemas(
     is_nested: Optional[bool] = False,
 ) -> Iterator[str]:
     remote_columns = {column.name: column for column in remote_schema}
+    local_columns = {column.name: column for column in local_schema}
+
+    for column in remote_schema:
+
+        if column.name not in local_columns:
+            yield f"Nested: Removed column {column}" if is_nested else f"Removed {column}"
+            continue
 
     for column in local_schema:
 
