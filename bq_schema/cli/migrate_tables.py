@@ -73,7 +73,9 @@ def main(
 
     if apply:
         if confirm_apply_schema_differences():
-            apply_schema_differences(schema_diffs=schema_diffs)
+            apply_schema_differences(
+                schema_diffs=schema_diffs, bigquery_client=bigquery_client
+            )
 
 
 def cli() -> None:
