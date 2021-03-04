@@ -13,6 +13,27 @@ def test_check_schemas():
     assert list(check_schemas(local_schema, remote_schema)) == []
 
 
+def test_check_removed_local_columns():
+    local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[])]
+    remote_schema = [
+        SchemaField("a", "RECORD", "REQUIRED", fields=[]),
+        SchemaField("b", "INTEGER"),
+    ]
+    assert list(check_schemas(local_schema, remote_schema)) == [
+        "Removed SchemaField('b', 'INTEGER', 'NULLABLE', None, ())"
+    ]
+
+
+def test_check_removed_local_nested_columns():
+    local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[])]
+    remote_schema = [
+        SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
+    ]
+    assert list(check_schemas(local_schema, remote_schema)) == [
+        "Nested: Removed column SchemaField('b', 'INTEGER', 'NULLABLE', None, ())"
+    ]
+
+
 def test_find_new_columns():
     local_schema = [SchemaField("a", "INTEGER")]
     assert list(check_schemas(local_schema, [])) == [
