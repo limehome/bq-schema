@@ -7,7 +7,7 @@ from typing import List, Optional
 from google.cloud.bigquery import SchemaField
 
 from bq_schema.dataclass_converter import dataclass_to_schema
-from bq_schema.types.type_mapping import Timestamp
+from bq_schema.types.type_mapping import Timestamp, Geography
 
 
 def test_types():
@@ -27,6 +27,7 @@ def test_types():
         date_field: date
         time_field: time
         datetime_field: datetime
+        geography_field: Geography
         nested_field: NestedSchema = field(
             metadata={"description": "This is a STRUCT field."}
         )
@@ -44,6 +45,7 @@ def test_types():
         SchemaField("date_field", "DATE", "REQUIRED", None, ()),
         SchemaField("time_field", "TIME", "REQUIRED", None, ()),
         SchemaField("datetime_field", "DATETIME", "REQUIRED", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "REQUIRED", None, ()),
         SchemaField(
             "nested_field",
             "STRUCT",
@@ -79,6 +81,7 @@ def test_optional_types():
         date_field: Optional[date]
         time_field: Optional[time]
         datetime_field: Optional[datetime]
+        geography_field: Optional[Geography]
         nested_field: Optional[NestedSchema] = field(
             metadata={"description": "This is a STRUCT field."}
         )
@@ -96,6 +99,7 @@ def test_optional_types():
         SchemaField("date_field", "DATE", "NULLABLE", None, ()),
         SchemaField("time_field", "TIME", "NULLABLE", None, ()),
         SchemaField("datetime_field", "DATETIME", "NULLABLE", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "NULLABLE", None, ()),
         SchemaField(
             "nested_field",
             "STRUCT",
@@ -129,6 +133,7 @@ def test_repeated_types():
         date_field: List[date]
         time_field: List[time]
         datetime_field: List[datetime]
+        geography_field: List[Geography]
         nested_field: List[NestedSchema] = field(
             metadata={"description": "This is a STRUCT field."}
         )
@@ -146,6 +151,7 @@ def test_repeated_types():
         SchemaField("date_field", "DATE", "REPEATED", None, ()),
         SchemaField("time_field", "TIME", "REPEATED", None, ()),
         SchemaField("datetime_field", "DATETIME", "REPEATED", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "REPEATED", None, ()),
         SchemaField(
             "nested_field",
             "STRUCT",

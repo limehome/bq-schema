@@ -6,7 +6,7 @@ from typing import List, Optional
 from google.cloud.bigquery.table import Row
 
 from bq_schema.row_transformer import RowTransformer
-from bq_schema.types.type_mapping import Timestamp
+from bq_schema.types.type_mapping import Timestamp, Geography
 
 
 @dataclass
@@ -41,6 +41,7 @@ class Schema:
     nested_field: NestedSchema
     nested_repeated_field: List[NestedSchema]
     datetime_field: datetime
+    geography_field: Geography
 
 
 def test_transform_dataclass_instance_to_row():
@@ -59,6 +60,7 @@ def test_transform_dataclass_instance_to_row():
         optional_int_set=10,
         optional_nested_field=None,
         datetime_field=datetime(2020, 2, 2),
+        geography_field=Geography("POINT(10 10)"),
         nested_field=NestedSchema(
             int_field=2,
             nested_again=NestedAgain(int_field=3),
@@ -82,6 +84,7 @@ def test_transform_dataclass_instance_to_row():
         "bytes_field": b"string",
         "date_field": date(2020, 1, 1),
         "datetime_field": datetime(2020, 2, 2, 0, 0),
+        "geography_field": "POINT (10 10)",
         "float_field": 1.0,
         "int_field": 1,
         "nested_field": {
@@ -117,6 +120,7 @@ def test_transfrom_row_into_dataclass():
         "bytes_field": b"string",
         "date_field": date(2020, 1, 1),
         "datetime_field": datetime(2020, 2, 2, 0, 0),
+        "geography_field": "POINT(10 10)",
         "float_field": 1.0,
         "int_field": 1,
         "nested_field": {
@@ -156,6 +160,7 @@ def test_transfrom_row_into_dataclass():
         optional_int_set=10,
         optional_nested_field=None,
         datetime_field=datetime(2020, 2, 2),
+        geography_field=Geography("POINT(10 10)"),
         nested_field=NestedSchema(
             int_field=2,
             nested_again=NestedAgain(int_field=3),

@@ -7,7 +7,7 @@ from typing import List, Optional
 from google.cloud.bigquery import SchemaField
 
 from bq_schema.schema_converter import schema_to_dataclass
-from bq_schema.types.type_mapping import Timestamp
+from bq_schema.types.type_mapping import Timestamp, Geography
 
 
 # pylint: disable=line-too-long, too-few-public-methods
@@ -27,6 +27,7 @@ class RequiredSchema:
     date_field: date
     time_field: time
     datetime_field: datetime
+    geography_field: Geography
     required_nested_field: RequiredNestedField = field(metadata={"description": "This field is a STRUCT field."})
 # fmt: on
 # pylint: enable=line-too-long
@@ -46,6 +47,7 @@ def test_required_schema_to_dataclass():
         SchemaField("date_field", "DATE", "REQUIRED", None, ()),
         SchemaField("time_field", "TIME", "REQUIRED", None, ()),
         SchemaField("datetime_field", "DATETIME", "REQUIRED", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "REQUIRED", None, ()),
         SchemaField(
             "required_nested_field",
             "STRUCT",
@@ -82,6 +84,7 @@ class NullableSchema:
     date_field: Optional[date]
     time_field: Optional[time]
     datetime_field: Optional[datetime]
+    geography_field: Optional[Geography]
     nullable_nested_field: Optional[NullableNestedField] = field(metadata={"description": "This field is a STRUCT field."})
 # fmt: on
 # pylint: enable=line-too-long
@@ -101,6 +104,7 @@ def test_optional_schema_to_dataclass():
         SchemaField("date_field", "DATE", "NULLABLE", None, ()),
         SchemaField("time_field", "TIME", "NULLABLE", None, ()),
         SchemaField("datetime_field", "DATETIME", "NULLABLE", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "NULLABLE", None, ()),
         SchemaField(
             "nullable_nested_field",
             "STRUCT",
@@ -137,6 +141,7 @@ class RepeatedSchema:
     date_field: List[date]
     time_field: List[time]
     datetime_field: List[datetime]
+    geography_field: List[Geography]
     repeated_nested_field: List[RepeatedNestedField] = field(metadata={"description": "This field is a STRUCT field."})
 # fmt: on
 # pylint: enable=line-too-long
@@ -156,6 +161,7 @@ def test_repeated_schema_to_dataclass():
         SchemaField("date_field", "DATE", "REPEATED", None, ()),
         SchemaField("time_field", "TIME", "REPEATED", None, ()),
         SchemaField("datetime_field", "DATETIME", "REPEATED", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "REPEATED", None, ()),
         SchemaField(
             "repeated_nested_field",
             "STRUCT",
