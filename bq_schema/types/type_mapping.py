@@ -19,12 +19,6 @@ class Geography(GeoObject):
             )
         super().__init__(geo_string)
 
-    def __str__(self) -> str:
-        return self.wkt()
-
-    def __repr__(self) -> str:
-        return self.wkt()
-
 
 TypeMapping: Dict[BigQueryTypes, Type] = {
     BigQueryTypes.STRING: str,
