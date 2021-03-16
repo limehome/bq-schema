@@ -5,6 +5,7 @@ from typing import Dict, NewType, Type
 from .big_query_types import BigQueryTypes
 
 Timestamp = NewType("Timestamp", datetime)
+Geography = NewType("Geography", str)
 
 
 TypeMapping: Dict[BigQueryTypes, Type] = {
@@ -18,4 +19,5 @@ TypeMapping: Dict[BigQueryTypes, Type] = {
     BigQueryTypes.DATE: date,
     BigQueryTypes.TIME: time,
     BigQueryTypes.DATETIME: datetime,
+    BigQueryTypes.GEOGRAPHY: Geography,
 }
