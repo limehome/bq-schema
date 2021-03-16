@@ -101,6 +101,7 @@ For a full list of supported types check the following schema:
 ```python
 from typing import Optional
 from dataclasses import dataclass
+from bq_schema.types.type_mapping import Timestamp, Geography
 
 @dataclass
 class RequiredNestedField:
@@ -120,6 +121,7 @@ class RequiredSchema:
     date_field: date
     time_field: time
     datetime_field: datetime
+    geography_field: Geography
     required_nested_field: RequiredNestedField = field(metadata={"description": "This field is a STRUCT field."})
     optional_nested_field: Optional[RequiredNestedField] 
     repeated_nested_field: List[RequiredNestedField]
@@ -134,6 +136,14 @@ from bq_schema.types.type_mapping import Timestamp
 from datetime import datetime
 
 the_timestamp = Timestamp(datetime.utcnow())
+```
+
+
+#### Geography
+This library treats the geography data type as a string. BigQuery accepts geography values either in the [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) or [GeoJson](https://geojson.org) format. To actually parse and work with geodata in python, one could use the [shapely](https://pypi.org/project/Shapely/) library. Here is an example how to load a point from the WKT format:
+```python
+from shapely.wkt import loads
+loads('POINT (0 0)')
 ```
 
 ### Table definitions
