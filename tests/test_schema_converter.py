@@ -7,7 +7,7 @@ from typing import List, Optional
 from google.cloud.bigquery import SchemaField
 
 from bq_schema.schema_converter import schema_to_dataclass
-from bq_schema.types.type_mapping import Timestamp, Geography
+from bq_schema.types.type_mapping import Geography, Timestamp
 
 
 # pylint: disable=line-too-long, too-few-public-methods

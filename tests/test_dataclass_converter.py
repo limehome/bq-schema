@@ -7,7 +7,7 @@ from typing import List, Optional
 from google.cloud.bigquery import SchemaField
 
 from bq_schema.dataclass_converter import dataclass_to_schema
-from bq_schema.types.type_mapping import Timestamp, Geography
+from bq_schema.types.type_mapping import Geography, Timestamp
 
 
 def test_types():
