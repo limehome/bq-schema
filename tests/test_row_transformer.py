@@ -60,7 +60,7 @@ def test_transform_dataclass_instance_to_row():
         optional_int_set=10,
         optional_nested_field=None,
         datetime_field=datetime(2020, 2, 2),
-        geography_field=Geography("POINT(10 10)"),
+        geography_field=Geography("POINT (10 10)"),
         nested_field=NestedSchema(
             int_field=2,
             nested_again=NestedAgain(int_field=3),
