@@ -51,9 +51,6 @@ def main(
     validate: bool,
 ) -> None:
     bigquery_client = create_connection()
-    global_project = project
-    global_dataset = dataset
-    schemas_errors = {}
 
     print("Finding schema differences...")
     schema_diffs = find_schema_differences(
