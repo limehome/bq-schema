@@ -2,9 +2,10 @@
 Convert a python dataclass into a BigQuery schema definition.
 """
 from dataclasses import Field, fields, is_dataclass
-from typing import Any, List, Optional, Type, Union
+from typing import Any, List, Optional, Type, Union, get_type_hints
 
 from google.cloud.bigquery import SchemaField
+from typing_extensions import get_origin
 
 from bq_schema.types.type_parser import (
     parse_inner_type_of_list,
@@ -19,14 +20,20 @@ _BASIC_TYPES_TO_NAME = {
 _NoneType = type(None)
 
 
-def dataclass_to_schema(dataclass: Type) -> List[SchemaField]:
+def dataclass_to_schema(
+    dataclass: Type, localns: Optional[dict] = None
+) -> List[SchemaField]:
     """
     Transfrom a dataclass into a list of SchemaField.
     """
     if not is_dataclass(dataclass):
         raise TypeError("Not a dataclass.")
 
-    return [_field_to_schema(field) for field in fields(dataclass)]
+    type_hints = get_type_hints(dataclass, localns=localns)
+    dataclass_fields = fields(dataclass)
+    for field in dataclass_fields:
+        field.type = type_hints[field.name]
+    return [_field_to_schema(field) for field in dataclass_fields]
 
 
 def _field_to_schema(field: Field) -> SchemaField:
@@ -49,10 +56,10 @@ def _field_to_schema(field: Field) -> SchemaField:
         )
 
     # typing.Optional is the same as typing.Union[SomeType, NoneType]
-    if field.type.__origin__ is Union:
+    if get_origin(field.type) is Union:
         return _parse_optional(field)
 
-    if field.type.__origin__ is list:
+    if get_origin(field.type) is list:
         return _parse_list(field)
 
     raise TypeError(f"Unsupported type: {field.type}.")
