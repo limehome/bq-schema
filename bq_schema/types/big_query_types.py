@@ -17,3 +17,4 @@ class BigQueryTypes(str, Enum):
     DATE = "DATE"
     TIME = "TIME"
     DATETIME = "DATETIME"
+    GEOGRAPHY = "GEOGRAPHY"

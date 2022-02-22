@@ -1,12 +1,18 @@
 import argparse
 from argparse import Namespace
+from pprint import pprint
 from typing import Optional
 
 from google.api_core.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 
 from bq_schema.cli.bigquery_connection import create_connection
-from bq_schema.migration.schema_diff import find_new_columns
+from bq_schema.migration.schema_diff import (
+    apply_schema_differences,
+    confirm_apply_schema_differences,
+    find_schema_differences,
+    print_format_schema_differences,
+)
 from bq_schema.migration.table_finder import find_tables
 
 
@@ -44,46 +50,29 @@ def main(
     apply: bool,
     validate: bool,
 ) -> None:
-    client = create_connection()
-    for local_table in set(find_tables(module_path)):
-        project = project or local_table.project
-        assert project, "Project has not been set."
-        dataset = dataset or local_table.dataset
-        assert dataset, "Dataset has not been set."
+    bigquery_client = create_connection()
 
-        table_identifier = f"{project}.{dataset}.{local_table.full_table_name()}"
-        print(f"Checking migrations for: {table_identifier}")
+    print("Finding schema differences...")
+    schema_diffs = find_schema_differences(
+        module_path=module_path,
+        bigquery_client=bigquery_client,
+        global_project=project,
+        global_dataset=dataset,
+    )
+    formated_schema_diff = print_format_schema_differences(schema_diffs=schema_diffs)
+    if formated_schema_diff:
+        print("Schema Differences:")
+        pprint(formated_schema_diff)
+        if validate:
+            raise Exception(formated_schema_diff)
+    else:
+        print("No schema differences found.")
 
-        try:
-            remote_table = client.get_table(table_identifier)
-        except NotFound as not_found:
-            table_exists_msg = f"Table does not exist in bq: {table_identifier}"
-            if validate:
-                raise Exception(table_exists_msg) from not_found
-
-            print(table_exists_msg)
-            if apply:
-                print("Creating table.")
-                table = Table(
-                    table_identifier,
-                    schema=local_table.get_schema_fields(),
-                )
-                if local_table.time_partitioning:
-                    table.time_partitioning = local_table.time_partitioning
-                print(client.create_table(table))
-        else:
-            new_columns = list(
-                find_new_columns(local_table.get_schema_fields(), remote_table.schema)
+    if apply:
+        if confirm_apply_schema_differences():
+            apply_schema_differences(
+                schema_diffs=schema_diffs, bigquery_client=bigquery_client
             )
-            if new_columns:
-                new_columns_message = f"Found new columns: {new_columns}"
-                if validate:
-                    raise Exception(new_columns_message)
-                print(new_columns_message)
-                if apply:
-                    print("Applying changes")
-                    remote_table.schema = local_table.get_schema_fields()
-                    print(client.update_table(remote_table, ["schema"]))
 
 
 def cli() -> None:
