@@ -25,6 +25,20 @@ def dataclass_to_schema(
 ) -> List[SchemaField]:
     """
     Transfrom a dataclass into a list of SchemaField.
+
+    If you want to transform a dataclass that is not defined in the
+    global scope you need to pass your locals.
+
+    def my_func():
+        @dataclass
+        class Example1:
+            a: int
+
+        @dataclass
+        class Example2:
+            b: Example1
+
+        dataclass_to_schema(Example2, localns=locals())
     """
     if not is_dataclass(dataclass):
         raise TypeError("Not a dataclass.")
