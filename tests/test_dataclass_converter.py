@@ -32,7 +32,7 @@ def test_types():
             metadata={"description": "This is a STRUCT field."}
         )
 
-    assert dataclass_to_schema(Schema) == [
+    assert dataclass_to_schema(Schema, localns=locals()) == [
         SchemaField(
             "string_field", "STRING", "REQUIRED", "This is a STRING field.", ()
         ),
@@ -86,7 +86,7 @@ def test_optional_types():
             metadata={"description": "This is a STRUCT field."}
         )
 
-    assert dataclass_to_schema(Schema) == [
+    assert dataclass_to_schema(Schema, localns=locals()) == [
         SchemaField(
             "string_field", "STRING", "NULLABLE", "This is a STRING field.", ()
         ),
@@ -138,7 +138,7 @@ def test_repeated_types():
             metadata={"description": "This is a STRUCT field."}
         )
 
-    assert dataclass_to_schema(Schema) == [
+    assert dataclass_to_schema(Schema, localns=locals()) == [
         SchemaField(
             "string_field", "STRING", "REPEATED", "This is a STRING field.", ()
         ),

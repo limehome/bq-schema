@@ -1,15 +1,17 @@
 from typing import Any, Type
 
+from typing_extensions import get_args
+
 _NoneType = type(None)
 
 
 def parse_inner_type_of_list(list_type: Any) -> Type:
-    return list_type.__args__[0]
+    return get_args(list_type)[0]
 
 
 def parse_inner_type_of_optional(optional_type: Any) -> Type:
 
-    args = optional_type.__args__
+    args = get_args(optional_type)
     if not (len(args) == 2 and any(arg is _NoneType for arg in args)):
         raise TypeError(f"Unsupported type: {optional_type}.")
 
