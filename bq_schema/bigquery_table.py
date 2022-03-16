@@ -50,6 +50,6 @@ class BigqueryTable:
         Return the schema as a list of SchemaField.
         """
         if is_dataclass(self.schema):
-            return dataclass_to_schema(cast(Type, self.schema))
+            return dataclass_to_schema(cast(Type, self.schema), localns={})
 
         return cast(List[SchemaField], self.schema)
