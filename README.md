@@ -50,6 +50,9 @@ class MyTable(BigqueryTable):
 
 If you have already tables created in your account, you can use the convert-table script to create a schema.
 
+*Note*: The script produces a file which is meant to be a starting point. You will most likely have to add some imports yourself!
+
+
 3. Create your table
 
 **Hint:** 
@@ -216,6 +219,8 @@ migrate-tables --module-path src/jobs/ --apply
 
 #### convert-table
 If you already have tables created in bigquery, this script print the corresponding dataclass for you.
+
+*Note*: The script produces a file which is meant to be a starting point. You will most likely have to add some imports yourself!
 
 Show the help:
 ```
