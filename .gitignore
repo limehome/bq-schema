@@ -5,6 +5,7 @@ Pipfile
 env
 .vscode
 .coverage
+.idea
 coverage.xml
 htmlcov/
 junit/
