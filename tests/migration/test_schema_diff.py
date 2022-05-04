@@ -20,7 +20,7 @@ def test_check_removed_local_columns():
         SchemaField("b", "INTEGER"),
     ]
     assert list(check_schemas(local_schema, remote_schema)) == [
-        "Removed SchemaField('b', 'INTEGER', 'NULLABLE', None, ())"
+        "Removed SchemaField('b', 'INTEGER', 'NULLABLE', None, (), None)"
     ]
 
 
@@ -30,21 +30,21 @@ def test_check_removed_local_nested_columns():
         SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
     ]
     assert list(check_schemas(local_schema, remote_schema)) == [
-        "Nested: Removed column SchemaField('b', 'INTEGER', 'NULLABLE', None, ())"
+        "Nested: Removed column SchemaField('b', 'INTEGER', 'NULLABLE', None, (), None)"
     ]
 
 
 def test_find_new_columns():
     local_schema = [SchemaField("a", "INTEGER")]
     assert list(check_schemas(local_schema, [])) == [
-        "New column SchemaField('a', 'INTEGER', 'NULLABLE', None, ())"
+        "New column SchemaField('a', 'INTEGER', 'NULLABLE', None, (), None)"
     ]
 
 
 def test_find_new_columns_missing_record():
     local_schema = [SchemaField("a", "RECORD")]
     assert list(check_schemas(local_schema, [])) == [
-        "New column SchemaField('a', 'RECORD', 'NULLABLE', None, ())"
+        "New column SchemaField('a', 'RECORD', 'NULLABLE', None, (), None)"
     ]
 
 
@@ -52,7 +52,7 @@ def test_find_new_columns_missing_column_in_record():
     local_schema = [SchemaField("a", "RECORD", fields=[SchemaField("b", "INTEGER")])]
     remote_schema = [SchemaField("a", "RECORD", fields=[])]
     assert list(check_schemas(local_schema, remote_schema)) == [
-        "Nested: New column SchemaField('b', 'INTEGER', 'NULLABLE', None, ())"
+        "Nested: New column SchemaField('b', 'INTEGER', 'NULLABLE', None, (), None)"
     ]
 
 
@@ -64,10 +64,10 @@ def test_check_mode_fail():
         SchemaField("a", "RECORD", "NULLABLE", fields=[SchemaField("b", "INTEGER")])
     ]
     assert list(check_schemas(local_schema, remote_schema)) == [
-        "There is difference between SchemaField('a', 'RECORD', 'REQUIRED', "
-        "None, (SchemaField('b', 'INTEGER', 'NULLABLE', None, ()),)) and "
+        "There is difference between SchemaField('a', 'RECORD', 'REQUIRED', None, "
+        "(SchemaField('b', 'INTEGER', 'NULLABLE', None, (), None),), None) and "
         "SchemaField('a', 'RECORD', 'NULLABLE', None, (SchemaField('b', 'INTEGER', "
-        "'NULLABLE', None, ()),))",
+        "'NULLABLE', None, (), None),), None)",
     ]
 
 
@@ -84,7 +84,7 @@ def test_check_mode_fail_nested():
     ]
     assert list(check_schemas(local_schema, remote_schema)) == [
         "Nested: There is difference between SchemaField('b', 'INTEGER', 'NULLABLE', "
-        "None, ()) and SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
+        "None, (), None) and SchemaField('b', 'INTEGER', 'REQUIRED', None, (), None)",
     ]
 
 
@@ -92,8 +92,8 @@ def test_check_field_type_fail():
     local_schema = [SchemaField("a", "STRING", "REQUIRED")]
     remote_schema = [SchemaField("a", "INTEGER", "REQUIRED")]
     assert list(check_schemas(local_schema, remote_schema)) == [
-        "There is difference between SchemaField('a', 'STRING', 'REQUIRED', None, ()) "
-        "and SchemaField('a', 'INTEGER', 'REQUIRED', None, ())",
+        "There is difference between SchemaField('a', 'STRING', 'REQUIRED', None, (), None) "
+        "and SchemaField('a', 'INTEGER', 'REQUIRED', None, (), None)",
     ]
 
 
@@ -110,7 +110,7 @@ def test_check_field_type_fail_nested():
     ]
     assert list(check_schemas(local_schema, remote_schema)) == [
         "Nested: There is difference between SchemaField('b', 'STRING', 'REQUIRED', "
-        "None, ()) and SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
+        "None, (), None) and SchemaField('b', 'INTEGER', 'REQUIRED', None, (), None)"
     ]
 
 
@@ -118,8 +118,9 @@ def test_check_field_type_unspecified():
     local_schema = [SchemaField("a", "RANDOM_FIELD_TYPE", "REQUIRED")]
     remote_schema = [SchemaField("a", "INTEGER", "REQUIRED")]
     assert list(check_schemas(local_schema, remote_schema)) == [
-        "Unspecified field type in SchemaField('a', 'RANDOM_FIELD_TYPE', 'REQUIRED', None, ()) "
-        "or SchemaField('a', 'INTEGER', 'REQUIRED', None, ())"
+        "Unspecified field type in "
+        "SchemaField('a', 'RANDOM_FIELD_TYPE', 'REQUIRED', None, (), None) "
+        "or SchemaField('a', 'INTEGER', 'REQUIRED', None, (), None)"
     ]
 
 
@@ -139,5 +140,5 @@ def test_check_field_type_unspecified_nested():
     ]
     assert list(check_schemas(local_schema, remote_schema)) == [
         "Unspecified field type in SchemaField('b', 'RANDOM_FIELD_TYPE', 'REQUIRED', "
-        "None, ()) or SchemaField('b', 'INTEGER', 'REQUIRED', None, ())",
+        "None, (), None) or SchemaField('b', 'INTEGER', 'REQUIRED', None, (), None)",
     ]
