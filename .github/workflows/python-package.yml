@@ -10,12 +10,13 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
 
-    runs-on: ubuntu-latest
+  build:
     strategy:
       matrix:
+        os: ['ubuntu-latest', 'windows-latest']
         python-version: ['3.7', '3.8', '3.9', '3.10']
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
@@ -31,4 +32,6 @@ jobs:
     - name: Run code checks
       run: |
         inv check-all
-        bash <(curl -s https://codecov.io/bash)
+    - name: codecov
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' }}
+      run: bash <(curl -s https://codecov.io/bash)
