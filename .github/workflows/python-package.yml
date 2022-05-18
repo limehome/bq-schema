@@ -32,4 +32,3 @@ jobs:
     - name: Run code checks
       run: |
         inv check-all
-        bash <(curl -s https://codecov.io/bash)
