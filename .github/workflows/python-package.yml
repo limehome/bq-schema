@@ -33,5 +33,5 @@ jobs:
       run: |
         inv check-all
     - name: codecov
-      if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == "3.7" }}
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' }}
       run: bash <(curl -s https://codecov.io/bash)
