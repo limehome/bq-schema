@@ -5,7 +5,7 @@ from dataclasses import Field, fields, is_dataclass
 from typing import Any, List, Optional, Type, Union, get_type_hints
 
 from google.cloud.bigquery import SchemaField
-from typing_extensions import get_origin
+from typing_extensions import get_origin, get_args
 
 from bq_schema.types.type_parser import (
     parse_inner_type_of_list,
@@ -70,6 +70,9 @@ def _field_to_schema(field: Field) -> SchemaField:
         )
 
     # typing.Optional is the same as typing.Union[SomeType, NoneType]
+    if field.type.__str__().startswith('typing.Optional[typing.List['): # There's probably a better solution for this
+        if get_args(field.type)[0]._name == "List":
+            return _parse_optional_list(field)
     if get_origin(field.type) is Union:
         return _parse_optional(field)
 
@@ -78,6 +81,16 @@ def _field_to_schema(field: Field) -> SchemaField:
 
     raise TypeError(f"Unsupported type: {field.type}.")
 
+def _parse_optional_list(field: Field):
+    field_type = parse_inner_type_of_list(field.type)
+    inner_field_type = get_args(field_type)[0]
+    return SchemaField(
+        name=field.name,
+        field_type=_python_type_to_big_query_type(inner_field_type),
+        mode=BigQueryFieldModes.REPEATED,
+        description=_parse_field_description(field),
+        fields=_parse_fields(field_type),
+    )
 
 def _parse_list(field: Field) -> SchemaField:
     field_type = parse_inner_type_of_list(field.type)
