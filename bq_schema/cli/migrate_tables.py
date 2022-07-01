@@ -39,6 +39,13 @@ def parse_args() -> Namespace:
         action="store_true",
         help="If set to true, this script will fail if a difference in schemas is found. Useful for CI.",
     )
+    parser.add_argument(
+        "--ignore-abstract",
+        default=False,
+        action="store_true",
+        help="If set to true, tables which are abstract (inheriting from ABC will be ignored during table finding",
+        required=False,
+    )
 
     return parser.parse_args()
 
@@ -49,6 +56,7 @@ def main(
     module_path: str,
     apply: bool,
     validate: bool,
+    ignore_abstract: bool,
 ) -> None:
     bigquery_client = create_connection()
 
@@ -58,6 +66,7 @@ def main(
         bigquery_client=bigquery_client,
         global_project=project,
         global_dataset=dataset,
+        ignore_abstract=ignore_abstract,
     )
     formated_schema_diff = print_format_schema_differences(schema_diffs=schema_diffs)
     if formated_schema_diff:
@@ -77,7 +86,14 @@ def main(
 
 def cli() -> None:
     args = parse_args()
-    main(args.project, args.dataset, args.module_path, args.apply, args.validate)
+    main(
+        args.project,
+        args.dataset,
+        args.module_path,
+        args.apply,
+        args.validate,
+        args.ignore_abstract,
+    )
 
 
 if __name__ == "__main__":
