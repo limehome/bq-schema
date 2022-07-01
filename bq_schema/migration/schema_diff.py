@@ -70,9 +70,10 @@ def find_schema_differences(
     bigquery_client: BigQueryClient,
     global_project: Optional[str],
     global_dataset: Optional[str],
+    ignore_abstract: bool,
 ) -> _SchemaDiffs:
     schema_diffs: _SchemaDiffs = {}
-    for local_table in find_tables(module_path):
+    for local_table in find_tables(module_path, ignore_abstract):
         project = global_project or local_table.project
         assert project, "Project has not been set."
         dataset = global_dataset or local_table.dataset

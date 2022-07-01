@@ -130,6 +130,21 @@ class RequiredSchema:
     repeated_nested_field: List[RequiredNestedField]
 ```
 
+#### Abstract tables
+
+If you want to have an class that inherits from BigqueryTable but does not actually map to a table in BigQuery (is abstract, common interface etc.), you can have it inherit from ABC and it will not be discovered if you pass the flag "--ignore-abstract"
+
+``` migrate-tables ... --ignore-abstract ```
+
+
+```python
+class SomeInterface(BigqueryTable, ABC):
+    pass 
+class ConcreteImplementation(SomeInterface):
+    name="Some value here"
+    schema = SomeSchema
+```
+Without the flag, this would fail due to name and schema being required in "SomeInterface"
 #### Timestamps
 Timestamps are deserialized into datetime objects, due to the nature of the underlying bq library. To distinguish between datetime and timestamp use bq_schema.types.type_mapping.
 Usage:

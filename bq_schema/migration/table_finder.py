@@ -2,22 +2,23 @@ import importlib
 import inspect
 import pkgutil
 import sys
+from abc import ABC
 from os import path
 from typing import Iterator, Optional, Set
 
 from bq_schema.bigquery_table import BigqueryTable
 
 
-def find_tables(module_path: str) -> Set[BigqueryTable]:
+def find_tables(module_path: str, ignore_abstract: bool) -> Set[BigqueryTable]:
     tables = {}
-    for table in _tables_iterator(module_path):
+    for table in _tables_iterator(module_path, ignore_abstract):
         tables[(table.project, table.dataset, table.name)] = table
 
     return set(tables.values())
 
 
 def _tables_iterator(
-    root_path: str, current_path: Optional[str] = None
+    root_path: str, ignore_abstract: bool, current_path: Optional[str] = None
 ) -> Iterator[BigqueryTable]:
     """
     Recursively find all defined bigquery tables.
@@ -37,8 +38,7 @@ def _tables_iterator(
         module = importlib.import_module(f"{module_path}.{module_name}")
         if is_pkg and module.__file__:
             sub_path = module.__file__.replace(f"{path.sep}__init__.py", "")
-            yield from _tables_iterator(root_path, sub_path)
-
+            yield from _tables_iterator(root_path, ignore_abstract, sub_path)
         for attribute_name in dir(module):
             if attribute_name.startswith("__"):
                 continue
@@ -48,5 +48,7 @@ def _tables_iterator(
                 inspect.isclass(attribute)
                 and issubclass(attribute, BigqueryTable)
                 and attribute != BigqueryTable
+                and not (ignore_abstract and issubclass(attribute, ABC))
             ):
+
                 yield attribute()
