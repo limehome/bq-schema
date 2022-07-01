@@ -18,7 +18,7 @@ def find_tables(module_path: str, ignore_abstract: bool) -> Set[BigqueryTable]:
 
 
 def _tables_iterator(
-    root_path: str, ignore_abstract, current_path: Optional[str] = None
+    root_path: str, ignore_abstract:bool, current_path: Optional[str] = None
 ) -> Iterator[BigqueryTable]:
     """
     Recursively find all defined bigquery tables.
