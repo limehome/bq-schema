@@ -38,7 +38,7 @@ def _tables_iterator(
         module = importlib.import_module(f"{module_path}.{module_name}")
         if is_pkg and module.__file__:
             sub_path = module.__file__.replace(f"{path.sep}__init__.py", "")
-            yield from _tables_iterator(root_path,ignore_abstract, sub_path)
+            yield from _tables_iterator(root_path, ignore_abstract, sub_path)
         for attribute_name in dir(module):
             if attribute_name.startswith("__"):
                 continue
