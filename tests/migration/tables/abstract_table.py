@@ -11,3 +11,8 @@ class AbstractTableSchema:
 
 class FirstTable(BigqueryTable, ABC):
     pass
+
+
+class SecondAbstractTable(FirstTable):
+    name = "second_abstract_table"
+    schema = AbstractTableSchema
