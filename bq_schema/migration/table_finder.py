@@ -50,8 +50,9 @@ def _tables_iterator(
                 and attribute != BigqueryTable
                 and not (
                     ignore_abstract
-                    and issubclass(attribute, ABC)
-                    and attribute in ABC.__subclasses__()
+                    and attribute
+                    in ABC.__subclasses__()  # only direct descendants are in ABC's subclass list
+                    # , any concrete implementations shouldn't be here
                 )
             ):
 
