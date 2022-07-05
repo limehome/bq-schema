@@ -48,7 +48,12 @@ def _tables_iterator(
                 inspect.isclass(attribute)
                 and issubclass(attribute, BigqueryTable)
                 and attribute != BigqueryTable
-                and not (ignore_abstract and issubclass(attribute, ABC))
+                and not (
+                    ignore_abstract
+                    and attribute
+                    in ABC.__subclasses__()  # only direct descendants are in ABC's subclass list
+                    # , any concrete implementations shouldn't be here
+                )
             ):
 
                 yield attribute()

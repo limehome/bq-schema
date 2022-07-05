@@ -10,7 +10,7 @@ def test_table_finder():
     file_path = pathlib.Path(__file__).parent
     tables_dir = os.path.join(file_path, "tables")
     table_names = {t.name for t in find_tables(tables_dir, True)}
-    expected_table_names = {"first_table", "second_table"}
+    expected_table_names = {"first_table", "second_table", "second_abstract_table"}
     assert expected_table_names == table_names
 
 
