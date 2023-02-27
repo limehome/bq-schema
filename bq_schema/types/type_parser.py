@@ -10,9 +10,9 @@ def parse_inner_type_of_list(list_type: Any) -> Type:
 
 
 def parse_inner_type_of_optional(optional_type: Any) -> Type:
+    args = tuple(arg for arg in get_args(optional_type) if arg not in [_NoneType, _NULL_TYPE])
 
-    args = get_args(optional_type)
-    if not (len(args) == 2 and any(arg is _NoneType for arg in args)):
+    if len(args) != 1:
         raise TypeError(f"Unsupported type: {optional_type}.")
 
-    return next(arg for arg in args if arg is not _NoneType)
+    return next(arg for arg in args)
