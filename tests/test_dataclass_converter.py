@@ -4,6 +4,7 @@ from datetime import date, datetime, time
 from decimal import Decimal
 from typing import List, Optional
 
+from dataclasses_jsonschema.type_defs import Nullable
 from google.cloud.bigquery import SchemaField
 
 from bq_schema.dataclass_converter import dataclass_to_schema
@@ -83,6 +84,60 @@ def test_optional_types():
         datetime_field: Optional[datetime]
         geography_field: Optional[Geography]
         nested_field: Optional[NestedSchema] = field(
+            metadata={"description": "This is a STRUCT field."}
+        )
+
+    assert dataclass_to_schema(Schema, localns=locals()) == [
+        SchemaField(
+            "string_field", "STRING", "NULLABLE", "This is a STRING field.", ()
+        ),
+        SchemaField("bytes_field", "BYTES", "NULLABLE", None, ()),
+        SchemaField("int_field", "INT64", "NULLABLE", None, ()),
+        SchemaField("float_field", "FLOAT64", "NULLABLE", None, ()),
+        SchemaField("numeric_field", "NUMERIC", "NULLABLE", None, ()),
+        SchemaField("bool_field", "BOOL", "NULLABLE", None, ()),
+        SchemaField("timestamp_field", "TIMESTAMP", "NULLABLE", None, ()),
+        SchemaField("date_field", "DATE", "NULLABLE", None, ()),
+        SchemaField("time_field", "TIME", "NULLABLE", None, ()),
+        SchemaField("datetime_field", "DATETIME", "NULLABLE", None, ()),
+        SchemaField("geography_field", "GEOGRAPHY", "NULLABLE", None, ()),
+        SchemaField(
+            "nested_field",
+            "STRUCT",
+            "NULLABLE",
+            "This is a STRUCT field.",
+            (
+                SchemaField(
+                    "int_field", "INT64", "NULLABLE", "This is an INT field.", ()
+                ),
+            ),
+        ),
+    ]
+
+
+def test_nullable_types():
+    @dataclass
+    class NestedSchema:
+        int_field: Nullable[int] = field(
+            metadata={"description": "This is an INT field."}
+        )
+
+    @dataclass
+    class Schema:
+        string_field: Nullable[str] = field(
+            metadata={"description": "This is a STRING field."}
+        )
+        bytes_field: Nullable[bytes]
+        int_field: Nullable[int]
+        float_field: Nullable[float]
+        numeric_field: Nullable[Decimal]
+        bool_field: Nullable[bool]
+        timestamp_field: Nullable[Timestamp]
+        date_field: Nullable[date]
+        time_field: Nullable[time]
+        datetime_field: Nullable[datetime]
+        geography_field: Nullable[Geography]
+        nested_field: Nullable[NestedSchema] = field(
             metadata={"description": "This is a STRUCT field."}
         )
 
