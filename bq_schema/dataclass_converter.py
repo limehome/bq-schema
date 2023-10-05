@@ -5,6 +5,7 @@ from dataclasses import Field, fields, is_dataclass
 from typing import Any, List, Optional, Type, Union, get_type_hints
 
 from google.cloud.bigquery import SchemaField
+from google.cloud.bigquery.schema import PolicyTagList
 from typing_extensions import get_origin
 
 from bq_schema.types.type_parser import (
@@ -58,6 +59,7 @@ def _field_to_schema(field: Field) -> SchemaField:
             field_type=field_type,
             description=_parse_field_description(field),
             mode=BigQueryFieldModes.REQUIRED,
+            policy_tags=_parse_policy_tags(field),
         )
 
     if is_dataclass(field.type):
@@ -67,6 +69,7 @@ def _field_to_schema(field: Field) -> SchemaField:
             mode=BigQueryFieldModes.REQUIRED,
             description=_parse_field_description(field),
             fields=_parse_fields(field.type),
+            policy_tags=_parse_policy_tags(field),
         )
 
     # typing.Optional is the same as typing.Union[SomeType, NoneType]
@@ -87,6 +90,7 @@ def _parse_list(field: Field) -> SchemaField:
         mode=BigQueryFieldModes.REPEATED,
         description=_parse_field_description(field),
         fields=_parse_fields(field_type),
+        policy_tags=_parse_policy_tags(field),
     )
 
 
@@ -98,6 +102,7 @@ def _parse_optional(field: Field) -> SchemaField:
         mode=BigQueryFieldModes.NULLABLE,
         description=_parse_field_description(field),
         fields=_parse_fields(field_type),
+        policy_tags=_parse_policy_tags(field),
     )
 
 
@@ -122,4 +127,9 @@ def _python_type_to_big_query_type(field_type: Any) -> BigQueryTypes:
 def _parse_field_description(field: Field) -> Optional[str]:
     if "description" in field.metadata:
         return field.metadata["description"]
+    return None
+
+def _parse_policy_tags(field: Field) -> Optional[PolicyTagList]:
+    if "policy_tags" in field.metadata:
+        return PolicyTagList(names=field.metadata["policy_tags"])
     return None
