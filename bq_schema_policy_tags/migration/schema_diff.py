@@ -12,6 +12,7 @@ from bq_schema.migration.table_finder import find_tables
 
 _SchemaDiffs = Dict[str, Union[MissingTable, ExistingTable]]
 
+
 # pylint: disable=no-member
 def check_schemas(
     local_schema: List[bigquery.SchemaField],
@@ -22,13 +23,11 @@ def check_schemas(
     local_columns = {column.name: column for column in local_schema}
 
     for column in remote_schema:
-
         if column.name not in local_columns:
             yield f"Nested: Removed column {column}" if is_nested else f"Removed {column}"
             continue
 
     for column in local_schema:
-
         if column.name not in remote_columns:
             yield f"Nested: New column {column}" if is_nested else f"New column {column}"
             continue

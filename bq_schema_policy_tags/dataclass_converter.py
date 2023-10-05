@@ -129,6 +129,7 @@ def _parse_field_description(field: Field) -> Optional[str]:
         return field.metadata["description"]
     return None
 
+
 def _parse_policy_tags(field: Field) -> Optional[PolicyTagList]:
     if "policy_tags" in field.metadata:
         return PolicyTagList(names=field.metadata["policy_tags"])

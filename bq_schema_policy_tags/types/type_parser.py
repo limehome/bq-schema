@@ -10,7 +10,6 @@ def parse_inner_type_of_list(list_type: Any) -> Type:
 
 
 def parse_inner_type_of_optional(optional_type: Any) -> Type:
-
     args = get_args(optional_type)
     if not (len(args) == 2 and any(arg is _NoneType for arg in args)):
         raise TypeError(f"Unsupported type: {optional_type}.")

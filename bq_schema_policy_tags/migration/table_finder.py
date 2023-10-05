@@ -32,7 +32,7 @@ def _tables_iterator(
 
     module_path_to_iterate = module_path
     module_path = module_path.replace(path.sep, ".")
-    for (_, module_name, is_pkg) in pkgutil.iter_modules([module_path_to_iterate]):
+    for _, module_name, is_pkg in pkgutil.iter_modules([module_path_to_iterate]):
         module_path = module_path.replace(sys_path, "")
         module_path = module_path[1:] if module_path.startswith(".") else module_path
         module = importlib.import_module(f"{module_path}.{module_name}")
@@ -55,5 +55,4 @@ def _tables_iterator(
                     # , any concrete implementations shouldn't be here
                 )
             ):
-
                 yield attribute()

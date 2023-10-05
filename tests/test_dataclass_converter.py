@@ -7,8 +7,8 @@ from typing import List, Optional
 from google.cloud.bigquery import SchemaField
 from google.cloud.bigquery.schema import PolicyTagList
 
-from bq_schema.dataclass_converter import dataclass_to_schema
-from bq_schema.types.type_mapping import Geography, Timestamp
+from bq_schema_policy_tags.dataclass_converter import dataclass_to_schema
+from bq_schema_policy_tags.types.type_mapping import Geography, Timestamp
 
 
 def test_types():
@@ -19,7 +19,12 @@ def test_types():
     @dataclass
     class Schema:
         string_field: str = field(metadata={"description": "This is a STRING field."})
-        pii_string_field: str = field(metadata={"description": "This is a PII STRING field.", "policy_tags":["policy_tag/string"]})
+        pii_string_field: str = field(
+            metadata={
+                "description": "This is a PII STRING field.",
+                "policy_tags": ["policy_tag/string"],
+            }
+        )
         bytes_field: bytes
         int_field: int
         float_field: float
@@ -39,7 +44,12 @@ def test_types():
             "string_field", "STRING", "REQUIRED", "This is a STRING field.", ()
         ),
         SchemaField(
-            "pii_string_field", "STRING", "REQUIRED", "This is a PII STRING field.", (), PolicyTagList(["policy_tag/string"])
+            "pii_string_field",
+            "STRING",
+            "REQUIRED",
+            "This is a PII STRING field.",
+            (),
+            PolicyTagList(["policy_tag/string"]),
         ),
         SchemaField("bytes_field", "BYTES", "REQUIRED", None, ()),
         SchemaField("int_field", "INT64", "REQUIRED", None, ()),
@@ -129,7 +139,12 @@ def test_repeated_types():
         string_field: List[str] = field(
             metadata={"description": "This is a STRING field."}
         )
-        pii_string_field: str = field(metadata={"description": "This is a PII STRING field.", "policy_tags":["policy_tag/string"]})
+        pii_string_field: str = field(
+            metadata={
+                "description": "This is a PII STRING field.",
+                "policy_tags": ["policy_tag/string"],
+            }
+        )
         bytes_field: List[bytes]
         int_field: List[int]
         float_field: List[float]
@@ -149,7 +164,12 @@ def test_repeated_types():
             "string_field", "STRING", "REPEATED", "This is a STRING field.", ()
         ),
         SchemaField(
-            "pii_string_field", "STRING", "REQUIRED", "This is a PII STRING field.", (), PolicyTagList(["policy_tag/string"])
+            "pii_string_field",
+            "STRING",
+            "REQUIRED",
+            "This is a PII STRING field.",
+            (),
+            PolicyTagList(["policy_tag/string"]),
         ),
         SchemaField("bytes_field", "BYTES", "REPEATED", None, ()),
         SchemaField("int_field", "INT64", "REPEATED", None, ()),

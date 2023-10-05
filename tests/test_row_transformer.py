@@ -45,7 +45,6 @@ class Schema:
 
 
 def test_transform_dataclass_instance_to_row():
-
     instance = Schema(
         string_field="string",
         bytes_field=b"string",
