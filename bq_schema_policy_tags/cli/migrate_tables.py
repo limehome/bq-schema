@@ -6,14 +6,14 @@ from typing import Optional
 from google.api_core.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 
-from bq_schema.cli.bigquery_connection import create_connection
-from bq_schema.migration.schema_diff import (
+from bq_schema_policy_tags.cli.bigquery_connection import create_connection
+from bq_schema_policy_tags.migration.schema_diff import (
     apply_schema_differences,
     confirm_apply_schema_differences,
     find_schema_differences,
     print_format_schema_differences,
 )
-from bq_schema.migration.table_finder import find_tables
+from bq_schema_policy_tags.migration.table_finder import find_tables
 
 
 def parse_args() -> Namespace:

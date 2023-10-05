@@ -1,8 +1,8 @@
 import argparse
 from argparse import Namespace
 
-from bq_schema.cli.bigquery_connection import create_connection
-from bq_schema.schema_converter import schema_to_dataclass
+from bq_schema_policy_tags.cli.bigquery_connection import create_connection
+from bq_schema_policy_tags.schema_converter import schema_to_dataclass
 
 
 def parse_args() -> Namespace:

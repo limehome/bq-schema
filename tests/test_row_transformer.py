@@ -5,8 +5,8 @@ from typing import List, Optional
 
 from google.cloud.bigquery.table import Row
 
-from bq_schema.row_transformer import RowTransformer
-from bq_schema.types.type_mapping import Geography, Timestamp
+from bq_schema_policy_tags.row_transformer import RowTransformer
+from bq_schema_policy_tags.types.type_mapping import Geography, Timestamp
 
 
 @dataclass
@@ -45,6 +45,7 @@ class Schema:
 
 
 def test_transform_dataclass_instance_to_row():
+
     instance = Schema(
         string_field="string",
         bytes_field=b"string",

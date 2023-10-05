@@ -3,7 +3,7 @@ import pathlib
 
 import pytest
 
-from bq_schema.migration.table_finder import find_tables
+from bq_schema_policy_tags.migration.table_finder import find_tables
 
 
 def test_table_finder():

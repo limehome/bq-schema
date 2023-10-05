@@ -1,6 +1,6 @@
 from google.cloud.bigquery import SchemaField
 
-from bq_schema.migration.schema_diff import check_schemas
+from bq_schema_policy_tags.migration.schema_diff import check_schemas
 
 
 def test_check_schemas():

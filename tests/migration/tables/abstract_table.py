@@ -1,7 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 
-from bq_schema.bigquery_table import BigqueryTable
+from bq_schema_policy_tags.bigquery_table import BigqueryTable
 
 
 @dataclass

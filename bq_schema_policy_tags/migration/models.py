@@ -3,7 +3,7 @@ from typing import List
 
 from google.cloud.bigquery.table import Table
 
-from bq_schema.bigquery_table import BigqueryTable
+from bq_schema_policy_tags.bigquery_table import BigqueryTable
 
 
 @dataclass

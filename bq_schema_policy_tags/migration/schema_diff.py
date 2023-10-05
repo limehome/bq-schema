@@ -7,11 +7,10 @@ from google.cloud.bigquery.schema import _STRUCT_TYPES, LEGACY_TO_STANDARD_TYPES
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery_v2 import types
 
-from bq_schema.migration.models import ExistingTable, MissingTable
-from bq_schema.migration.table_finder import find_tables
+from bq_schema_policy_tags.migration.models import ExistingTable, MissingTable
+from bq_schema_policy_tags.migration.table_finder import find_tables
 
 _SchemaDiffs = Dict[str, Union[MissingTable, ExistingTable]]
-
 
 # pylint: disable=no-member
 def check_schemas(
@@ -23,11 +22,13 @@ def check_schemas(
     local_columns = {column.name: column for column in local_schema}
 
     for column in remote_schema:
+
         if column.name not in local_columns:
             yield f"Nested: Removed column {column}" if is_nested else f"Removed {column}"
             continue
 
     for column in local_schema:
+
         if column.name not in remote_columns:
             yield f"Nested: New column {column}" if is_nested else f"New column {column}"
             continue

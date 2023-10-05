@@ -8,7 +8,7 @@ from google.cloud.bigquery import SchemaField
 from google.cloud.bigquery.schema import PolicyTagList
 from typing_extensions import get_origin
 
-from bq_schema.types.type_parser import (
+from bq_schema_policy_tags.types.type_parser import (
     parse_inner_type_of_list,
     parse_inner_type_of_optional,
 )
@@ -128,7 +128,6 @@ def _parse_field_description(field: Field) -> Optional[str]:
     if "description" in field.metadata:
         return field.metadata["description"]
     return None
-
 
 def _parse_policy_tags(field: Field) -> Optional[PolicyTagList]:
     if "policy_tags" in field.metadata:
