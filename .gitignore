@@ -10,3 +10,4 @@ env
 coverage.xml
 htmlcov/
 junit/
+.pytest_cache
