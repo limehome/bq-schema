@@ -6,7 +6,7 @@ from abc import ABC
 from os import path
 from typing import Iterator, Optional, Set
 
-from bq_schema.bigquery_table import BigqueryTable
+from bq_schema_policy_tags.bigquery_table import BigqueryTable
 
 
 def find_tables(module_path: str, ignore_abstract: bool) -> Set[BigqueryTable]:

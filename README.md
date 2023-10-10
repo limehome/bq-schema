@@ -1,6 +1,6 @@
 # bq-schema
 ![Python package](https://github.com/limehome/bq-schema/workflows/Python%20package/badge.svg)
-[![PyPI version](https://badge.fury.io/py/bq_schema.svg)](https://badge.fury.io/py/bq_schema)
+[![PyPI version](https://badge.fury.io/py/bq_schema_policy_tags.svg)](https://badge.fury.io/py/bq_schema)
 ![Codecov](https://img.shields.io/codecov/c/github/limehome/bq-schema)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
@@ -104,7 +104,7 @@ For a full list of supported types check the following schema:
 ```python
 from typing import Optional
 from dataclasses import dataclass
-from bq_schema.types.type_mapping import Timestamp, Geography
+from bq_schema_policy_tags.types.type_mapping import Timestamp, Geography
 
 @dataclass
 class RequiredNestedField:
@@ -130,6 +130,19 @@ class RequiredSchema:
     repeated_nested_field: List[RequiredNestedField]
 ```
 
+### Adding Policy Tags (New)
+To add policy tags to a field, include policy_tags in the field metadata.
+
+```python
+from dataclasses import dataclass, field
+
+@dataclass
+class ExampleWithPolicyTags:
+    sensitive_data: str = field(metadata={"policy_tags": ["sensitive"]})
+
+schema = dataclass_to_schema(ExampleWithPolicyTags)
+```
+
 #### Abstract tables
 
 If you want to have an class that inherits from BigqueryTable but does not actually map to a table in BigQuery (is abstract, common interface etc.), you can have it inherit from ABC and it will not be discovered if you pass the flag "--ignore-abstract"
@@ -146,11 +159,11 @@ class ConcreteImplementation(SomeInterface):
 ```
 Without the flag, this would fail due to name and schema being required in "SomeInterface"
 #### Timestamps
-Timestamps are deserialized into datetime objects, due to the nature of the underlying bq library. To distinguish between datetime and timestamp use bq_schema.types.type_mapping.
+Timestamps are deserialized into datetime objects, due to the nature of the underlying bq library. To distinguish between datetime and timestamp use bq_schema_policy_tags.types.type_mapping.
 Usage:
 
 ```python
-from bq_schema.types.type_mapping import Timestamp
+from bq_schema_policy_tags.types.type_mapping import Timestamp
 from datetime import datetime
 
 the_timestamp = Timestamp(datetime.utcnow())
@@ -192,7 +205,7 @@ you can implement the full_table_name method.
 #### Time partitioning
 Define time partitioning for your table:
 ```python
-from bq_schema.types.type_mapping import Timestamp
+from bq_schema_policy_tags.types.type_mapping import Timestamp
 from google.cloud.bigquery import TimePartitioning, TimePartitioningType
 
 class MyTable:

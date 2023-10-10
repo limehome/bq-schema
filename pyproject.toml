@@ -3,8 +3,8 @@ requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
 [tool.flit.scripts]
-convert-table = "bq_schema.cli.convert_table:cli"
-migrate-tables = "bq_schema.cli.migrate_tables:cli"
+convert-table = "bq_schema_policy_tags.cli.convert_table:cli"
+migrate-tables = "bq_schema_policy_tags.cli.migrate_tables:cli"
 
 [tool.flit.metadata]
 module = "bq_schema_policy_tags"
