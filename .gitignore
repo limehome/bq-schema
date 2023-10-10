@@ -11,3 +11,4 @@ coverage.xml
 htmlcov/
 junit/
 .pytest_cache
+.DS_Store
