@@ -6,7 +6,7 @@
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
 
-## Motivation
+## Motivation (Original GH Repo)
 
 At limehome we are heavy users of python and bigquery. This library was created to mainly solve the following issues:
 
@@ -24,6 +24,19 @@ Additionally this library aims to help the users through the usage of [python ty
 
 The main benefit of combining all these features is, that we can guarantee that our code will run, before we deploy to production.
 
+## Motivation for Fork
+
+The primary reason for forking this project was to extend its existing capabilities to support Policy Tags and Taxonomy tags in Google Cloud Platform (GCP). The original codebase provided a strong foundation for working with Python dataclasses, but it lacked features for adding metadata tags that can be crucial for managing sensitive or personally identifiable information (PII).
+
+### Why Policy Tags?
+
+Policy Tags allow for more granular control over data access. When dealing with sensitive or regulated data, such as PII, it's crucial to have mechanisms that enable fine-tuned permissions. Policy Tags in GCP make it possible to associate specific security and access policies with individual data fields, rather than entire data sets, thereby providing a more secure and manageable environment.
+
+### Taxonomy Tags in GCP
+
+Taxonomy Tags in GCP serve as a method for categorizing data based on its type or nature. By attaching taxonomy tags to data fields, organizations can more easily track, manage, and govern their data. This is particularly useful for compliance with data protection laws and regulations, as well as for internal data governance strategies.
+
+By incorporating these features into Python dataclasses through this fork, we aim to provide a more robust, secure, and compliant data handling solution.
 
 
 ## Quickstart
@@ -314,3 +327,23 @@ Validate code is correctly formatted:
 ```
 inv check-code-format
 ```
+
+## Known Issues
+
+### MissingValueError in `test_row_transformer.py`
+
+When running the pytest suite, a `MissingValueError` may occur, specifically indicating a missing value for the field "string_field". This issue appears to be inherent to the original codebase and may not have a straightforward solution due to the project being no longer maintained.
+
+#### Potential Causes
+
+1. The `row` object in the test case may not contain the "string_field" and its value.
+2. The `Schema` data class might be expecting a value for "string_field" which is not provided.
+3. The function `dict_to_row(row_as_dict: dict) -> Row` may not be converting the dictionary to a `Row` object correctly.
+
+#### Suggested Workarounds
+
+1. Double-check the test data for completeness.
+2. If possible, modify the `Schema` data class to provide a default value for "string_field".
+3. Check the `RowTransformer` class and the `from_dict` function for issues related to field handling.
+
+Please note that these are suggested workarounds and may not resolve the issue entirely.
