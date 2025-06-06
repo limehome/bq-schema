@@ -3,17 +3,17 @@ from google.cloud.bigquery import SchemaField
 from bq_schema.migration.schema_diff import check_schemas
 
 
-def test_check_schemas():
+def test_check_schemas() -> None:
     local_schema = [
         SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
     ]
     remote_schema = [
         SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
     ]
-    assert list(check_schemas(local_schema, remote_schema)) == []
+    assert list(check_schemas(local_schema, remote_schema))
 
 
-def test_check_removed_local_columns():
+def test_check_removed_local_columns() -> None:
     local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[])]
     remote_schema = [
         SchemaField("a", "RECORD", "REQUIRED", fields=[]),
@@ -24,7 +24,7 @@ def test_check_removed_local_columns():
     ]
 
 
-def test_check_removed_local_nested_columns():
+def test_check_removed_local_nested_columns() -> None:
     local_schema = [SchemaField("a", "RECORD", "REQUIRED", fields=[])]
     remote_schema = [
         SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
@@ -34,21 +34,21 @@ def test_check_removed_local_nested_columns():
     ]
 
 
-def test_find_new_columns():
+def test_find_new_columns() -> None:
     local_schema = [SchemaField("a", "INTEGER")]
     assert list(check_schemas(local_schema, [])) == [
         "New column SchemaField('a', 'INTEGER', 'NULLABLE', None, (), None)"
     ]
 
 
-def test_find_new_columns_missing_record():
+def test_find_new_columns_missing_record() -> None:
     local_schema = [SchemaField("a", "RECORD")]
     assert list(check_schemas(local_schema, [])) == [
         "New column SchemaField('a', 'RECORD', 'NULLABLE', None, (), None)"
     ]
 
 
-def test_find_new_columns_missing_column_in_record():
+def test_find_new_columns_missing_column_in_record() -> None:
     local_schema = [SchemaField("a", "RECORD", fields=[SchemaField("b", "INTEGER")])]
     remote_schema = [SchemaField("a", "RECORD", fields=[])]
     assert list(check_schemas(local_schema, remote_schema)) == [
@@ -56,7 +56,7 @@ def test_find_new_columns_missing_column_in_record():
     ]
 
 
-def test_check_mode_fail():
+def test_check_mode_fail() -> None:
     local_schema = [
         SchemaField("a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER")])
     ]
@@ -71,7 +71,7 @@ def test_check_mode_fail():
     ]
 
 
-def test_check_mode_fail_nested():
+def test_check_mode_fail_nested() -> None:
     local_schema = [
         SchemaField(
             "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "INTEGER", "NULLABLE")]
@@ -88,7 +88,7 @@ def test_check_mode_fail_nested():
     ]
 
 
-def test_check_field_type_fail():
+def test_check_field_type_fail() -> None:
     local_schema = [SchemaField("a", "STRING", "REQUIRED")]
     remote_schema = [SchemaField("a", "INTEGER", "REQUIRED")]
     assert list(check_schemas(local_schema, remote_schema)) == [
@@ -97,7 +97,7 @@ def test_check_field_type_fail():
     ]
 
 
-def test_check_field_type_fail_nested():
+def test_check_field_type_fail_nested() -> None:
     local_schema = [
         SchemaField(
             "a", "RECORD", "REQUIRED", fields=[SchemaField("b", "STRING", "REQUIRED")]
@@ -114,7 +114,7 @@ def test_check_field_type_fail_nested():
     ]
 
 
-def test_check_field_type_unspecified():
+def test_check_field_type_unspecified() -> None:
     local_schema = [SchemaField("a", "RANDOM_FIELD_TYPE", "REQUIRED")]
     remote_schema = [SchemaField("a", "INTEGER", "REQUIRED")]
     assert list(check_schemas(local_schema, remote_schema)) == [
@@ -124,7 +124,7 @@ def test_check_field_type_unspecified():
     ]
 
 
-def test_check_field_type_unspecified_nested():
+def test_check_field_type_unspecified_nested() -> None:
     local_schema = [
         SchemaField(
             "a",

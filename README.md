@@ -27,7 +27,7 @@ The main benefit of combining all these features is, that we can guarantee that 
 
 
 ## Quickstart
-Since this library makes use of newer features of python, you need at least python3.7.
+Since this library makes use of newer features of python, you need at least python3.9.
 
 1. Install the package
 ```
@@ -252,17 +252,17 @@ convert-table --project project --dataset scraper --table-name table_name >> sch
 #### Setting up your dev environment
 1) Clone the project.
 2) Navigate into the cloned project.
-3) Create a virtual environment with **python version >=3.7**
+3) Create a virtual environment with **python version >=3.9**
 
     `pipenv --python PYTHON_VERSION`
     ```
-    $ pipenv --python 3.7
+    $ pipenv --python 3.13
     ```
     or
 
     `virtualenv -p /PATH_TO_PYTHON/ /DESIRED_PATH/VENV_NAME`
     ```
-    $ virtualenv -p /usr/bin/python3.7 placeholder
+    $ virtualenv -p /usr/bin/python3.13 placeholder
     ```
 
 4) Install flit via pip

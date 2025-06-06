@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-latest', 'windows-latest']
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -33,5 +33,5 @@ jobs:
       run: |
         inv check-all
     - name: codecov
-      if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.7' }}
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9' }}
       run: bash <(curl -s https://codecov.io/bash)
