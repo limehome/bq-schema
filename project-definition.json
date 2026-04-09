@@ -1,9 +1,15 @@
 {
-    "$schema": "https://hub.dev.limehome.com/schemas/project-definition-v2.schema.json",
-    "project": {
+  "$schema": "https://hub.dev.limehome.com/schemas/project-definition-v2.schema.json",
+  "project": {
+    "name": "bq-schema",
+    "type": "library",
+    "summary": "Python library to define BigQuery schemas as dataclasses and run migrations",
+    "description": "bq-schema lets you define BigQuery table schemas as Python dataclasses, run migrations to create/update tables, and serialize/deserialize rows. It ensures schema and code stay in sync before deploy and supports versioning. Includes a convert-table script to bootstrap schemas from existing tables; requires Python 3.7+.",
+    "packages": [
+      {
         "name": "bq-schema",
-        "type": "library",
-        "summary": "Python library to define BigQuery schemas as dataclasses and run migrations",
-        "description": "bq-schema lets you define BigQuery table schemas as Python dataclasses, run migrations to create/update tables, and serialize/deserialize rows. It ensures schema and code stay in sync before deploy and supports versioning. Includes a convert-table script to bootstrap schemas from existing tables; requires Python 3.7+."
-    }
+        "type": "pypi"
+      }
+    ]
+  }
 }
