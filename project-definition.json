@@ -3,8 +3,8 @@
   "project": {
     "name": "bq-schema",
     "type": "library",
-    "summary": "Python library to define BigQuery schemas as dataclasses and run migrations",
-    "description": "bq-schema lets you define BigQuery table schemas as Python dataclasses, run migrations to create/update tables, and serialize/deserialize rows. It ensures schema and code stay in sync before deploy and supports versioning. Includes a convert-table script to bootstrap schemas from existing tables; requires Python 3.7+.",
+    "summary": "Library for defining and migrating BigQuery table schemas as code to keep schema and codebase in sync",
+    "description": "bq-schema lets you define BigQuery table schemas as Python dataclasses, run migrations to create or update tables, and serialize and deserialize rows. It ensures schema and code stay in sync before deployment and supports versioning and bootstrapping from existing tables.",
     "packages": [
       {
         "name": "bq-schema",
