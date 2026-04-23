@@ -1,5 +1,5 @@
 import inspect
-from dataclasses import field
+from dataclasses import field, dataclass
 from datetime import date, datetime, time
 from decimal import Decimal
 from typing import List, Optional
@@ -12,10 +12,13 @@ from bq_schema.types.type_mapping import Geography, Timestamp
 
 # pylint: disable=line-too-long, too-few-public-methods
 # fmt: off
+@dataclass
 class RequiredNestedField:
     int_field: int = field(metadata={"description": "This field is an INT field."})
 
 
+@dataclass
+# pylint: disable=too-many-instance-attributes
 class RequiredSchema:
     string_field: str = field(metadata={"description": "This field is a STRING field."})
     bytes_field: bytes
@@ -69,10 +72,12 @@ def test_required_schema_to_dataclass():
 
 # pylint: disable=line-too-long
 # fmt: off
+@dataclass
 class NullableNestedField:
     int_field: Optional[int] = field(metadata={"description": "This field is an INT field."})
 
 
+@dataclass
 class NullableSchema:
     string_field: Optional[str] = field(metadata={"description": "This field is a STRING field."})
     bytes_field: Optional[bytes]
@@ -126,10 +131,12 @@ def test_optional_schema_to_dataclass():
 
 # pylint: disable=line-too-long
 # fmt: off
+@dataclass
 class RepeatedNestedField:
     int_field: List[int] = field(metadata={"description": "This field is an INT field."})
 
 
+@dataclass
 class RepeatedSchema:
     string_field: List[str] = field(metadata={"description": "This field is a STRING field."})
     bytes_field: List[bytes]
